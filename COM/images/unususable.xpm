@@ -1,0 +1,22 @@
+/* XPM */
+static char *unususable[]={
+"16 16 3 1",
+"# c #303030",
+". c #ff0000",
+"a c #ffffff",
+".##############.",
+"#.aaaaaaaaaaaa.#",
+"#a.aaaaaaaaaa.a#",
+"#aa.aaaaaaaa.aa#",
+"#aaa.aaaaaa.aaa#",
+"#aaaa.aaaa.aaaa#",
+"#aaaaa.aa.aaaaa#",
+"#aaaaaa..aaaaaa#",
+"#aaaaaa..aaaaaa#",
+"#aaaaa.aa.aaaaa#",
+"#aaaa.aaaa.aaaa#",
+"#aaa.aaaaaa.aaa#",
+"#aa.aaaaaaaa.aa#",
+"#a.aaaaaaaaaa.a#",
+"#.aaaaaaaaaaaa.#",
+".##############."};

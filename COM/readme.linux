@@ -1,0 +1,21 @@
+Step 1:  Sources
+=======
+checkout ART 13M000-13 for MDIS wizard sources in the LINUX tree
+
+~/work/LINUX/TOOLS/MDISWIZ/COM
+
+Step 2: Environment
+=======
+export QTDIR=/users/ub/QT/qt-x11-free-3.3.1
+export PATH=$PATH:$QTDIR/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$QTDIR/lib
+
+
+Step 3: Create Makefile
+=======
+cd ~/work/LINUX/TOOLS/MDISWIZ/COM
+qmake -o Makefile mdiswiz.pro
+
+
+Step 4: Make
+=======

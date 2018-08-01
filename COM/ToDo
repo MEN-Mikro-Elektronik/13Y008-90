@@ -1,0 +1,92 @@
+
+main.cpp rework
+
+
+COSMETICS:
+----------
+Help|Contents
+DESC: "this keys have only effect on debug drivers"....
+
+CPUs/BBISes/EXT
+---------------
+see mdiswiz-checklist.xls
+
+Kahlua-Box: Change Model-Name
+
+ALL OS: reinstall package not all files moved to .mdisbak
+
+
+VXWORKS: Makefile all default native tools, user libs ...
+VXWORKS: Makefile MDBG - export missing
+
+
+Linux Build-System
+------------
+Handle MDIS_RTAI_SUPPORT yes and no (Handle empty RTAI_DIR)
+make install
+Elinos: makefile: ./autonode.sh
+
+packagefile parser:
+-------------------
+
+
+Checkin:
+---------
+add buildinstall.xpm
+
+
+GUI:
+------------------
+
+==============================================================================
+DONE
+==============================================================================
+Nach build: Meldung finished
+Toolbar/Menu Entry to add components
+QGArray::at: Absolute index 1 out of range: EM02
+BBIS A302: says: A201: BBIS driver for A302 
+EM04/EC01
+D201 etc: Add possibility to ignore OSS_PciSlotToBus...
+- add EXIT/CLOSE button to the Project drop down menue
+*All BBIS swmodule names currently upper case
+*CHAMELEON BBIS can be connected to StdPci
+* swmodule internal flag
+* mdiswiz -dumpmodels does not work (command line mode)
+  only message "QPaintDevice: Must construct a QApplication before a QPaintDevice"
+*Mdiswiz Version in Makefile and system.dsc file
+* notos / os flag
+*Kahlua Box: Check extension board PCI_BUS_SLOT
+*Install: files damaged on 13m05806 -> laesst sich nicht mehr reproduzieren
+*Add flag to to disable change device names (BBIS names!)
+*Don't allow CPU delete
+*RTAI support -> RTAI support ausblenden falls nicht MDIS_RTAI_SUPPORT
+*Project settings dialog cancel: Persist/value problem
+*- date, revision
+*- vendor, hwname, modelname
+*- hidden=true/false. Besser als Attribute von Setting!
+*- autoid handling
+*- alle built-in hwNamen checken
+*Device::getHwName -> getModelName
+*native drivers (M77)
+*dbgsettingsmbuf
+*swmodulestab: ys -> ies
+*Add components: Refresh mdiswiz after initial creation
+*Lx: Makefile+system.dsc in one file -> no.
+*Build (execprogram: wrap bei ' ? )
+*INSTALL_STATICLIBS ?
+
+*Package Menu:
+	*- List installed
+	*- install
+	*- reparse
+*Symbol for devices -> Dieter fragen
+
+*Save , Project Settings, Save, Save verändert MDIS_PROJ_DIR!
+*ALL_RTAI_xxx: wenn MDIS_RTAI_SUPPORT=no, bleiben die in Makefile stehen
+
+*qDebug() ersetzen mit Macro
+*F7 
+*Build -> Message "Build finished!. Proceed with..."
+*Version of qt
+LINUX : gcc2/3 compatible
+ALL OS: Makefile all default common tools, user libs ...

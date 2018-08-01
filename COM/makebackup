@@ -1,0 +1,4 @@
+#!/bin/sh
+DATE=`date +%y%m%d` 
+tar zcvf ../mdiswiz_backups/mdiswiz_$DATE.tgz --exclude ".[a-z]*" --exclude "doc" . --exclude mdiswiz
+echo SAVED INTO ../mdiswiz_backups/mdiswiz_$DATE.tgz

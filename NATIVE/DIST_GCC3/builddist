@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Script to build MDISWIZARD
+#
+
+
+. ./builddist.env
+
+make clean
+make && make install

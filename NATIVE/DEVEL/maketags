@@ -1,0 +1,1 @@
+find ../../COM -name *.cpp -or -name *.h | etags -

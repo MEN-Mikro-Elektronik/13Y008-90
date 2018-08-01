@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ "$#" -gt 0 ]; then
+  /disc/QT_460/qt-everywhere-opensource-src-4.6.0.noiconv/configure -static -fast -no-exceptions -no-stl -no-sm -no-xcursor -no-xrandr -no-xrender -no-xkb -no-xshape -no-xinerama -no-xfixes -no-xsync -no-xinput -no-webkit -no-sse2 -nomake tools -nomake examples -no-iconv -qt-zlib -L/usr/X11/lib -lX11 -lexpat -confirm-license "$@"
+else
+  /disc/QT_460/qt-everywhere-opensource-src-4.6.0.noiconv/configure -static -fast -no-exceptions -no-stl -no-sm -no-xcursor -no-xrandr -no-xrender -no-xkb -no-xshape -no-xinerama -no-xfixes -no-xsync -no-xinput -no-webkit -no-sse2 -nomake tools -nomake examples -no-iconv -qt-zlib -L/usr/X11/lib -lX11 -lexpat -confirm-license
+fi

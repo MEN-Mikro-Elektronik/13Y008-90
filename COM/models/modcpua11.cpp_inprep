@@ -1,0 +1,221 @@
+/***************************************************************************
+ */
+/*!       \file  modcpua11.cpp 
+ *       \brief  Classes for model MEN A11
+ *      \author	 Klaus.Popp@men.de
+ *		  $Date: 2003/06/03 10:17:57 $
+ *    $Revision: 1.2 $
+ *
+ * ??? Not verified  
+ *      Project: mdiswiz
+ *     Switches: -
+ */
+/*-------------------------------[ History ]---------------------------------
+ *
+ * $Log: modcpua11.cpp_inprep,v $
+ * Revision 1.2  2003/06/03 10:17:57  kp
+ * Initial Revision
+ *
+ * Revision 1.1  2003/05/02 14:33:21  dschmidt
+ * Initial Revision
+ *
+ * Revision 1.1  2003/05/02 14:26:34  dschmidt
+ * Initial Revision
+ *
+ * Revision 1.1  2003/05/02 14:17:59  dschmidt
+ * Initial Revision
+ *
+ *---------------------------------------------------------------------------
+ * (c) Copyright by MEN mikro elektronik GmbH, Nuernberg, Germany
+ ****************************************************************************/
+#include "models.h"
+#include "resourcemng.h"
+
+class ModVmeIfA11 : public VmeBusInterface 
+{
+public:
+	ModVmeIfA11();
+	virtual ulong supportedIrqLevels();
+};
+
+
+// -----------------------------------------------------------------
+// CPU A11
+
+//! Creates an A11 CPU device
+/*!
+  including the bus interfaces and, if \a withSubDevs is \c true, the 
+  BBIS devices
+*/
+ModCpuA11::ModCpuA11(bool withSubDevs, const QString &modelName) : 
+	CpuDevice( modelName, QString("a11"), false )
+{
+	BusInterface *busIf1, *busIf2;
+	BbisDevice *bbis1, *bbis2;
+
+	setDescription("VME 6U PowerPC 824x CPU");	
+
+	// Create the bus interfaces
+	busIf1 = new ModVmeIfA11();					// VME interface
+	addChild( busIf1 );
+	busIf1->setInstName( QString("VMEbus"));
+
+	busIf2 = new BusInterface( LocalBus );	// Interface for A11 BBISes	
+	addChild( busIf2 );
+	busIf2->setEndianSwapping( true );
+
+	if( withSubDevs ){
+		// Create the local BBISes
+		bbis1 = new ModBbisA11();					// MMod-Bbis
+		busIf2->addChild( bbis1 );
+
+		bbis2 = new ModBbisA11ObPcmip();			// PC-MIPs
+		busIf2->addChild( bbis2 );	
+	}
+
+
+}
+
+Device *ModCpuA11::create(bool withSubDevs)
+{
+	return new ModCpuA11(withSubDevs);
+}
+
+SwModuleList *ModCpuA11::enumSwModules()
+{
+	if( lstSwModules == 0 ){
+		lstSwModules = new SwModuleList;
+
+		// always ignore byteswapping (to generate driver.mak)
+		lstSwModules->add( makeStdDriverSwModule("A11", "", true ));
+	}
+	return lstSwModules;
+}
+
+ModCpuA11603e::ModCpuA11603e(bool withSubDevs) : 
+	ModCpuA11( withSubDevs. QString("MEN A11 (603e CPU)"))
+{
+	setDescription("VME 6U PowerPC 603e CPU");	
+}
+
+Device *ModCpuA11603e::create(bool withSubDevs)
+{
+	return new ModCpuA11603e(withSubDevs);
+}
+
+ModCpuA11740::ModCpuA11740(bool withSubDevs) : 
+	ModCpuA11( withSubDevs. QString("MEN A11 (740 CPU)"))
+{
+	setDescription("VME 6U PowerPC 740 CPU");	
+}
+
+Device *ModCpuA11740::create(bool withSubDevs)
+{
+	return new ModCpuA11740(withSubDevs);
+}
+
+
+// -----------------------------------------------------------------
+// BBIS A11
+
+//! Creates an A11 BBIS device
+/*!
+  if \a withSubDevs is \c true, it also creates the LM78 MDIS device
+*/
+ModBbisA11::ModBbisA11(bool withSubDevs) :
+	BbisDevice( QString("A11 OB-MMODS"), 
+				QString("a12"), false, LocalBus )
+{
+	BbisSlot *bbSlot;
+	MdisDevice *mdDev;
+
+	setInstName( QString("a12_mmodules") );
+	setDescription("Pseudo device for onboard M-Modules slots");	
+
+	bbSlot = new BbisSlot( LocalBus, 0x1000 );	// LM78???
+	addChild( bbSlot );
+
+	if( withSubDevs ){
+		// Create QSPI MDIS dev
+		mdDev = new MdisDevice( QString("LM78"), QString("lm78"),
+								false, LocalBus );
+		bbSlot->addChild( mdDev );
+		mdDev->setInstName( "lm78" );
+	}
+}
+
+SwModuleList *ModBbisA11::enumSwModules()
+{
+	if( lstSwModules == 0 ){
+		lstSwModules = new SwModuleList;
+
+		// always ignore byteswapping (to generate driver.mak)
+		lstSwModules->add( makeStdDriverSwModule("A11", "", true ));
+	}
+	return lstSwModules;
+}
+
+//! as Device::getDriverName, but always returns non-swapped variant
+QString 
+ModBbisA11::getDriverName( bool fullName=false, bool withSw=true)
+{
+	return Device::getDriverName( fullName, false );
+}
+
+// -----------------------------------------------------------------
+// BBIS A11 PCMIPs
+
+//! Creates an A11 onboard PC-MIP/PMC BBIS device
+ModBbisA11ObPcmip::ModBbisA11ObPcmip(bool withSubDevs) :
+	BbisDevice( QString("A11 OBPCI"), 
+				QString("pci"), false, LocalBus )
+{
+	BbisSlot *bbSlot;
+
+	setInstName( QString("a11_obpcmip") );
+	setDescription("Pseudo device for onboard PC-MIP slots");	
+
+	// create slots
+	for( int slotNum=0; slotNum<2; slotNum++ ){
+		bbSlot = new BbisSlot( PcMip, slotNum );
+		addChild( bbSlot );
+	}
+}
+
+SwModuleList *ModBbisA11ObPcmip::enumSwModules()
+{
+	if( lstSwModules == 0 ){
+		lstSwModules = new SwModuleList;
+
+		lstSwModules->add( makeStdDriverSwModule("PCI", "", true ));
+	}
+	return lstSwModules;
+}
+
+//! as Device::getDriverName, but always returns non-swapped variant
+QString 
+ModBbisA11ObPcmip::getDriverName( bool fullName=false, bool withSw=true)
+{
+	return Device::getDriverName( fullName, false );
+}
+
+// -----------------------------------------------------------------
+// VME Bus If 
+
+ModVmeIfA11::ModVmeIfA11() : VmeBusInterface()
+{
+	vmeA16Res->addRegion( 0x0000, 0x10000 );
+	vmeA24Res->addRegion( 0x000000, 0x1000000 );
+	vmeA32Res->addRegion( 0x01000000, 0x0f00000 ); //???
+	vmeIrqVectorRes->addRegion( 0x80, 0x7e );
+}
+
+ulong
+ModVmeIfA11::supportedIrqLevels()
+{
+	return 0xfe; // level 7-1
+}
+
+
+
+
