@@ -191,8 +191,8 @@ ModCpuA21::ModCpuA21(SubModel submod,
 		busIfMezz = new PciBusInterface(
 			LocalBus,		// ifType
 			0, 0,			// min/maxSlot
-			NULL,			// basePciPath
-			NULL,			// directIdTbl
+			(const Q3MemArray<uchar> *)(NULL),			// basePciPath
+			(const Q3MemArray<uchar> *)(NULL),			// directIdTbl
 			false);			// pciDomain
 
 		busIfMezz->setInstName( QString("PCI for MMOD"));

@@ -3140,6 +3140,12 @@ void LinuxMdiswiz::slotScanFinished()
 
 		if( success )
 		{
+			Q3ListViewItem *it;
+			// delete the old GUI items
+			it = listView->firstChild();
+			if( it )
+				delete it;
+
 			MAIN_DeleteOldCfg();
 			if(	errMsg != QString::null )
 			{
