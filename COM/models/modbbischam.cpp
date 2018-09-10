@@ -790,9 +790,12 @@ ModBbisCham::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 				parentDesc->addChild( dFact.create("PCI_DOMAIN_NUMBER", _prop->pciDomainNo ) );
 			}
 
-	        parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath ));
-	        parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", devNum ));
-	        parentDesc->addChild( dFact.create("PCI_BUS_SLOT", _prop->slotNo ));
+            //parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath ));
+            //parentDesc->addChild( dFact.create("PCI_BUS_SLOT", _prop->slotNo ));
+	        //parentDesc->addChild( dFact.create("PCI_DEVICE_ID", _prop->pciDevNo ));
+	        parentDesc->addChild( dFact.create("PCI_BUS_NUMBER", _prop->pciBusNo ));
+	        parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", _prop->pciDevNo ));
+
 	        
 	        if (this->chamSmbActive)
 	        {
@@ -862,8 +865,10 @@ ModBbisCham::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 				parentDesc->addChild( dFact.create("PCI_DOMAIN_NUMBER", _prop->pciDomainNo ) );
 	        }
 
-	        parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath ));
-	        parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", devNum ));
+	        //parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath ));
+	        //parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", devNum ));
+	        parentDesc->addChild( dFact.create("PCI_BUS_NUMBER", _prop->pciBusNo ));
+	        parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", _prop->pciDevNo ));
 
 	        if (this->chamSmbActive)
 	        {
@@ -1059,7 +1064,7 @@ ModBbisCham::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
         		{
         			helpDescriptor = dFact.create(
         								QString("DEVICE_IDV2_%1").arg(i), 
-        								id );
+										id );
         		}
         		
         	} // end if AutoIdChamV2

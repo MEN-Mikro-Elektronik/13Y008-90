@@ -1067,13 +1067,13 @@ Device::applyProperties( DescriptorEntryDirectory *devDesc, QString &errMsg )
 	// report unknown descriptor entries to user, but don't treat this as
 	// a fatal error
 
-	for( e=devDesc->firstChild(); e; e=e->nextSibling() ){
-		if( e->getType() != DescriptorEntry::Directory ){
-			QString key = e->path().section("/",1);
-			errMsg += QString("unknown descriptor entry %1\n").arg(key);
-			break; // only report one descriptor entry
-		}
-	}
+	//for( e=devDesc->firstChild(); e; e=e->nextSibling() ){
+	//	if( e->getType() != DescriptorEntry::Directory ){
+	//		QString key = e->path().section("/",1);
+	//		errMsg += QString("unknown descriptor entry %1\n").arg(key);
+	//		break; // only report one descriptor entry
+	//	}
+	//}
 
 	return applyProperties( (DeviceProperties *)0, errMsg );
 }

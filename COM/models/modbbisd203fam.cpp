@@ -588,7 +588,8 @@ ModBbisD203Family::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 		Q3MemArray<uchar> busPath;
 		busIf->pciBusPath( -1, &busPath );
 
-		parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath, helpTxt ) );
+		//parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath, helpTxt ) );
+		parentDesc->addChild( dFact.create("PCI_BUS_NUMBER", _prop->pciBusNo, helpTxt ) );
 
 		// PCI device number (=PCI_DEVICE_ID) of PCIe endpoints is always 0
 		if( busIf->getIsPciE() ){
@@ -597,18 +598,19 @@ ModBbisD203Family::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 		}
 		else{
 			// PCI_BUS_SLOT
-			parentDesc->addChild( dFact.create("PCI_BUS_SLOT", _prop->slotNo ));
+			//parentDesc->addChild( dFact.create("PCI_BUS_SLOT", _prop->slotNo ));
+			parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", _prop->pciDevNo ));
 		}
 
 		// PCI_DEVICE_ID (name is missleading...)
 		//
 		// This forces the D201 driver to ignore OSS_PciSlotToPciDevice...
-		busIf->pciBusPath( _prop->slotNo, &busPath );
-		if( busPath.size() > 0 ){
-			int ix = busPath.size() -1;
-			parentDesc->addChild( dFact.create("PCI_DEVICE_ID", busPath[ix] ));
-		}
-
+		//busIf->pciBusPath( _prop->slotNo, &busPath );
+		//if( busPath.size() > 0 ){
+		//	int ix = busPath.size() -1;
+		//	parentDesc->addChild( dFact.create("PCI_DEVICE_ID", busPath[ix] ));
+		//}
+		parentDesc->addChild( dFact.create("PCI_DEVICE_ID", _prop->pciDevNo ));
 	}
 	else {
 		// PCI_BUS_NUMBER
