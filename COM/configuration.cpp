@@ -220,7 +220,7 @@ Configuration::Configuration() :
 						 "Testing M_write() function" );
 	lstSwModules.add( swMod );
 
-	swMod = new SwModule( type, "fpga_load", "FPGA_LOAD/COM/program.mak",
+	swMod = new SwModule( type, "fpga_load", "FPGA_LOAD/program.mak",
 						 "FPGA update utility (VxWorks only)" );
 	lstSwModules.add( swMod );
 
