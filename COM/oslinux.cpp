@@ -341,7 +341,6 @@ static const QString defMenLinuxPath("/opt/menlinux");
 static const QString elinosSubPath("src/mdis");
 static const QString packageDbPath("PACKAGE_DESC");
 static void setAutoConfDir( QString kernelDir );
-static QString runAsRootGraphical;
 static QString elinosRootPath;
 static QString menLinuxPath; // typicall /opt/menlinux
 static QString autoconfPath;
@@ -1205,8 +1204,6 @@ OsLinux::OsLinux() : TargetOs( OsFactory::Linux )
 	menLinuxPath = getenv("MEN_LIN_DIR");
 	if( menLinuxPath.isEmpty() )
 		menLinuxPath = OsLinuxConfiguration::hostSpecPath(defMenLinuxPath);
-	runAsRootGraphical = "which gksudo && export RUNASROOT=gksudo || export RUNASROOT=pkexec && $RUNASROOT";
-
 }
 
 Configuration *
@@ -3070,7 +3067,7 @@ void LinuxMdiswiz::slotScan()
 {
 	QStringList args;
 	//pass MEN_LIN_DIR to script
-	args << "sh" << "-c" << runAsRootGraphical + " " + menLinuxPath + "/scan_system.sh " + menLinuxPath ;
+	args << "sh" << "-c" << menLinuxPath + "/scan_system.sh " + menLinuxPath ;
 	doBuild( "Scanning system and generating example system.dsc", args, 1 );
 }
 
@@ -3090,7 +3087,7 @@ void LinuxMdiswiz::slotRebuild()
 {
 	QStringList args;
 
-	args << "sh" << "-c" << "echo  \"MEN_LIN_DIR=$MEN_LIN_DIR ELINOS_PROJECT=$ELINOS_PROJECT\"; make clean; make";
+	args << "sh" << "-c" << "echo \"MEN_LIN_DIR=$MEN_LIN_DIR ELINOS_PROJECT=$ELINOS_PROJECT\"; make clean; make";
 
 	doBuild( "Rebuilding Project (make clean; make)", args, 0 );
 }
@@ -3099,21 +3096,14 @@ void LinuxMdiswiz::slotRebuild()
 void LinuxMdiswiz::slotBuildInstall()
 {
 	QStringList args;
-	QString cmd;
 
 #ifdef _WIN32
 	/* no kdesu available/needed */
 	args << "make install";
 #else
-	if( menLinuxPath != defMenLinuxPath )
-		cmd += "export MEN_LIN_DIR=" + menLinuxPath + "; ";
-	// must explicitely change to the MDIS project dir
-	// in some environments (SUSE 9.1) kdesud executes
-	// the command otherwise in /root
-	// ts: 12/2012: use gksudo in newer installations
-	args << "sh" << "-c" << "echo  \"MEN_LIN_DIR=$MEN_LIN_DIR ELINOS_PROJECT=$ELINOS_PROJECT\"; " + runAsRootGraphical + " make install";
+	args << "sh" << "-c" << "echo \"MEN_LIN_DIR=$MEN_LIN_DIR ELINOS_PROJECT=$ELINOS_PROJECT\"; make install";
 #endif
-	doBuild( "Installing Project (make install as root)", args, 0 );
+	doBuild( "Installing Project (make install)", args, 0 );
 }
 
 
