@@ -379,6 +379,7 @@ CpuModelFactory::CpuModelFactory() : ModelFactory()
     append( new ModCpuXm50(false));
     append( new ModCpuBx50x(false));
     append( new ModCpuDc15(false));
+    append( new ModCpuBx51x(false));
     append( new ModCpuBx70x(false));
     append( new ModCpuCb30c(false));
     append( new ModCpuCb70c(false));
