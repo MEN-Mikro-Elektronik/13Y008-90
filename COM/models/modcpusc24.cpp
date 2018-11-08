@@ -254,7 +254,7 @@ ModBbisBx51x::ModBbisBx51x(bool withSubDevs) : ModBbisChamIsa()
 	setHwName("CHAMELEON_ISA");
 	// setIsaAddress( 0xe000, true );
 	// ts: changed to memmapped, only needed for Linux, VxWorks
-	setIsaAddress( 0xe000e000, false );
+	setIsaAddress( 0xf000e000, false );
 	setInstName( "SC31_FPGA" );
 	setInstNameChangeAllowed( false );
 }
