@@ -117,6 +117,8 @@ ModBbisPciGenPropTab::ModBbisPciGenPropTab(
 	WIZ_DYNAMIC_CAST( (getMainDlg()->getDevice()->getParent()), busIf,
 					  PciBusInterface * );
 
+	QString devModelName = getMainDlg()->getDevice()->getInstName();
+
 	hasPciBusPath = busIf->hasPciBusPath();
 
 	pciSlotCbox = 0;
@@ -154,21 +156,21 @@ ModBbisPciGenPropTab::ModBbisPciGenPropTab(
 							  "carrier board").
 					  arg(busIf->busIfTypeMap.keyToStr(
 						  busIf->getBusIfType())));
-		
+
 		QLabel *lab1 = new QLabel("Slot:", this );
 		if ( busIf->getBusIfType() == HwComponent::Cpci ) {
 			lab1->setText("Slot (System Slot is 1, asc.)");
 		}
 		gl->addWidget( lab1, row, 0, Qt::AlignRight );
-		
+
 		pciSlotCbox = new Q3ComboBox( false, this );
 		gl->addWidget( pciSlotCbox, row, 1, Qt::AlignLeft );
 		row ++;
 
-		// only one slot? ->grey it up
-		if( busIf->getNbrOfSlots() == 1 ){
-			lab1->setEnabled(false);
-			pciSlotCbox->setEnabled(false);
+		// only one slot? or f223 ->grey it up
+		if( busIf->getNbrOfSlots() == 1 || devModelName.contains("f223") ) {
+		lab1->setEnabled(false);
+		pciSlotCbox->setEnabled(false);
 		}
 	}
 	else {

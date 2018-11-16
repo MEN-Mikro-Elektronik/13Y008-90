@@ -396,10 +396,20 @@ ModBbisPciGen::applyProperties( DeviceProperties *newProp,
 		}
 
 		else if( s != (ulong)_prop->slotNo ){
-			msg.sprintf("Alternative address 0x%lx allocated\n", s );
-			_prop->slotNo = s;
-			errMsg += msg;
-			ar = ApplyPropAlternate;
+			 if( (_prop->deviceName.contains("f223")) )
+			 {
+				 msg.sprintf("Alternative address 0x%lx allocated\nFor F223 bus number has higher priority", s );
+				 _prop->slotNo = s;
+				 errMsg += msg;
+				 ar = ApplyPropOk;
+			 }
+			 else
+			 {
+				 msg.sprintf("Alternative address 0x%lx allocated\n", s );
+				 _prop->slotNo = s;
+				 errMsg += msg;
+				 ar = ApplyPropAlternate;
+			 }
 		}
 	}
 
@@ -627,6 +637,7 @@ ModBbisPciGen::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 	WIZ_DYNAMIC_CAST( prop, _prop, ModBbisPciGenProperties * );
 	DescriptorFactory dFact;
 	DescriptorEntry *e;
+	bool isF223 = false;
 
 	wDebug(("ModBbisPciGen::createSpecialDesc"));
 
@@ -647,8 +658,12 @@ ModBbisPciGen::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 	PciBusInterface *busIf = (PciBusInterface *)getParent();
 	WIZ_ASSERT(busIf);
 
+	if( (_prop->deviceName.contains("f223")))
+	{
+		isF223 = true;
+	}
 	// bus path known?
-	if( busIf->hasPciBusPath() ){
+	if( busIf->hasPciBusPath() && !isF223 ){
 
 		uchar				devNum;
 		Q3MemArray<uchar>	busPath;
