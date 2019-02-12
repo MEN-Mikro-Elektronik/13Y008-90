@@ -333,7 +333,15 @@ extern QWidget *G_mainWindow; //!< used as anchor for dialog
 extern QApplication *G_qApp;  //!< main application
 
 // strings
-static const QString mdiswizLinuxVersion("linux-13.0");
+/*!
+  OS version string
+
+  OS version os-x.y
+
+  os  = OS name
+  x.y = Major/Minor version number
+*/
+static const QString mdiswizLinuxVersion("linux-14.0");
 static const QString sysDescPlainName("system");
 static const QString sysDescName( sysDescPlainName + ".dsc");
 static const QString makeName("Makefile");

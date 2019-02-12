@@ -37,3 +37,7 @@ qfsfileengine_unix.cpp:(.text+0x708): warning: Using 'getpwuid_r' in statically 
 /usr/X11/lib/libX11.a(x11trans.o): In function `_X11TransSocketINETConnect':
 (.text+0x1e1b): warning: Using 'getservbyname' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
 ts@swserver:~/work/LINUX/TOOLS/MDISWIZ/NATIVE/DIST_GCC3>
+
+Notice
+----------------------
+Before releasing new release please update common version string (*mdiswizVersion*) and OS version string (e.g. for Linux: *mdiswizLinuxVersion*).
