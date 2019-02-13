@@ -866,7 +866,7 @@ public:
 
 			"Include debug strings. Modules run slower.";
 
-		_value = QVariant(choises[Dbg]);
+		_value = QVariant(choises[Nodbg]);
 	}
 
 	virtual Setting *clone(){
@@ -2105,7 +2105,7 @@ OsLinuxConfiguration::cdkChanged( int cdkIdx )
 		settingBinInstallDir->	setValue( "/usr/local/bin");
 		settingLibInstallDir->	setValue( "/usr/local/lib");
 		settingStaticLibInstallDir->setValue( "/usr/local/lib");
-		settingDbg->			setValue( "dbg");
+		settingDbg->			setValue( "nodbg");
 		settingLibMode->		setValue( "shared");
 		settingTargetTree->		setEnabled(Setting::Hide);
 		settingDescInstallDir->	setValue( "/etc/mdis" );
@@ -2142,7 +2142,7 @@ OsLinuxConfiguration::cdkChanged( int cdkIdx )
 		settingDevNodeInstallDir->setValue( "$(ELINOS_PROJECT)/app.rootfs/dev" );
 		settingStaticLibInstallDir->setValue( unknownPath );
 		settingStaticLibInstallDir->setEnabled(Setting::Disabled);
-		settingDbg->			setValue( "dbg");
+		settingDbg->			setValue( "nodbg");
 		settingLibMode->		setValue( "shared");
 		settingLibMode->		setEnabled(Setting::Disabled); // for now
 		settingTargetTree->		setEnabled(Setting::Hide);
@@ -2157,7 +2157,7 @@ OsLinuxConfiguration::cdkChanged( int cdkIdx )
 		settingBinInstallDir->	setValue( "$(TARGET_TREE)/usr/bin");
 		settingLibInstallDir->	setValue( "$(TARGET_TREE)/usr/lib");
 		settingStaticLibInstallDir->setValue( unknownPath );
-		settingDbg->			setValue( "dbg");
+		settingDbg->			setValue( "nodbg");
 		settingLibMode->		setValue( "static");
 		settingTargetTree->		setValue( unknownPath );
 		settingDescInstallDir->	setValue( "$(TARGET_TREE)/etc/mdis" );
