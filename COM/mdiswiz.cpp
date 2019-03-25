@@ -1572,11 +1572,14 @@ void MdiswizView::slotSaveAsConfig()
 
 	wDebug(("slotSaveAsConfig()"));
 	if( MAIN_GetCurrentCfg()->saveAs(errMsg) == false ){
-
-		VMsgBox::criticalOk(
-			MAIN_GetCurrentCfg()->msgBoxCaption(),
-			QString("Could not save configuration"),
-			errMsg,	this );
+		//errMsg may contain messages if the config name is invalid
+		//errMsg is empty when 'Cancel' button was used,
+		if( !errMsg.isEmpty() ){
+			VMsgBox::criticalOk(
+					MAIN_GetCurrentCfg()->msgBoxCaption(),
+					QString("Could not save configuration"),
+					errMsg,	this );
+		}
 	}
 	else {
 		cfgUnmodified();

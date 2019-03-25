@@ -1160,7 +1160,7 @@ public:
 		vb->addWidget( lab );
 
 		lab = new QLabel(
-			"<font color=\"red\">To generate an initial config (scan system) click Cancel and use button \"scan\" from the toolbar.\n</font>", this );
+			"To generate an initial config (scan system) click Cancel and use button \"scan\" from the toolbar.\n", this );
 		vb->addWidget( lab );
 		
 		lab = new QLabel( "Please choose your initial action:", this );
