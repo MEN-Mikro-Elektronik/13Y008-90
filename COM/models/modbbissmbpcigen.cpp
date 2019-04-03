@@ -844,13 +844,24 @@ ModBbisSmbPciLinux::enumSwModules()
 }
 
 QString
+ModBbisSmbPciLinux::getDeviceNameTpl()
+{
+	QString devName;
+	if ( this->modelName.contains("SMBPCI") )
+		devName = "SMB2_BUS__idx0";
+	else
+		devName = "SMB2";
+
+	return devName;
+}
+
+QString
 ModBbisSmbPciLinux::getDriverName( bool fullName, bool withSw )
 {
 	UTIL_UNREF_PARAM( fullName );
 	UTIL_UNREF_PARAM( withSw );
 	QString rv = "SMB2";
-
-    return rv;
+	return rv;
 }
 
 // add child to list of children (and set child's parent)

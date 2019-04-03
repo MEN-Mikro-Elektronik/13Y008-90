@@ -145,11 +145,24 @@ NameMng::suggest( const QString &baseName )
 {
 	QString name, bn;
 	int idx = 1;
+	bool addUnderscore=true;
 
 	bn = baseName.lower();
 
+	// start idx from 0 for devices appended with "__idx0"
+	// do not add underscore after device_name
+	if ( bn.contains("__idx0") ){
+		bn.remove("__idx0");
+		addUnderscore=false;
+		idx=0;
+	}
+
 	while(1){
-		name = QString("%1_%2").arg(bn).arg(idx);
+		if ( addUnderscore )
+			name = QString("%1_%2").arg(bn).arg(idx);
+		else
+			name = QString("%1%2").arg(bn).arg(idx);
+
 		if( isAvail( name ))
 			return name;
 		idx++;

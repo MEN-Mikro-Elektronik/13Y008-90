@@ -146,6 +146,7 @@ public:
     QString getMainProperties();
     void freeResources();
     SwModuleList* enumSwModules();
+    QString getDeviceNameTpl();
     
     void createSpecialDesc( DescriptorEntryDirectory *parentDesc );
     ApplyResult applyProperties( DescriptorEntryDirectory *devDesc, QString &errMsg );
