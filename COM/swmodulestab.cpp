@@ -150,7 +150,7 @@ CfgSwModuleTab::addItems( Q3CheckListItem *controller,
 
 		if( mod->modType() == modType ){
 			item = new CfgSwModuleItem( controller, *mod );
-			item->setOn( mod->isEnabled() && !(mod->isInternal())  );
+			item->setOn( mod->isEnabled() );
 		}
 	}
 }
