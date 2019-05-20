@@ -223,7 +223,11 @@ Configuration::Configuration() :
 	swMod = new SwModule( type, "hwbug_ppc", "HWBUG/program.mak",
 						 "Simple Debugger for Hardware Development Purpose" );
 	swMod->setInternal(true);
+	lstSwModules.add( swMod );
 
+	swMod = new SwModule( type, "mm_ident", "mm_ident/program.mak",
+						 "Tool to read the M-Module EEPROM." );
+	swMod->setInternal(true);
 	lstSwModules.add( swMod );
 
 	// Should not be compiled as a default module
