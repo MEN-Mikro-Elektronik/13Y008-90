@@ -220,7 +220,7 @@ Configuration::Configuration() :
 						 "Testing M_write() function" );
 	lstSwModules.add( swMod );
 
-	swMod = new SwModule( type, "hwbug_ppc", "HWBUG/program.mak",
+	swMod = new SwModule( type, "hwbug", "HWBUG/program.mak",
 						 "Simple Debugger for Hardware Development Purpose" );
 	swMod->setInternal(true);
 	lstSwModules.add( swMod );
