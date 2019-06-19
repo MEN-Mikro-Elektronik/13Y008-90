@@ -282,14 +282,15 @@ SwModuleList::findMake( int type, const QString &makefilePath )
 			mod->makefilePath_all()->contains(makefilePath) )
 		{
 			wDebug(("SwModuleList::findMake found"));
+			// If internal sw module .mak already exists in makefile then
+			// remove internal flag and use as non internal sw module
+			if( mod->isInternal() )
+			{
+				mod->setInternal(false);
+			}
 			return mod;
 		}
 	}
 
 	return 0;
-}	
-
-
-
-
-
+}
