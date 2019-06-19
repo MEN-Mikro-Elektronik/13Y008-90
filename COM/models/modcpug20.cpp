@@ -143,7 +143,40 @@ ModCpuG22::ModCpuG22( bool withSubDevs ):
 	}
 }
 
+SwModuleList *
+ModCpuG22::enumSwModules()
+{
+	SwModule *swMod;
+	SwModuleTypes::ModType type = SwModuleTypes::NativeDriver;
+	swMod = new SwModule( type, "G22_g2x", "DRIVERS/Z001_SMB/driver_g2x.mak",
+						 "G22 special IO mapped driver" );
 
+	if( lstSwModules == 0 && swMod )
+		lstSwModules = new SwModuleList;
+
+	if( lstSwModules && swMod )
+	{
+		lstSwModules->add( swMod );
+	}
+	else if ( swMod )
+	{
+		delete swMod;
+		return lstSwModules;
+	}
+	else
+	{
+		return lstSwModules;
+	}
+
+	swMod = new SwModule( type, "men_lx_chameleon", "DRIVERS/CHAMELEON/driver.mak",
+						 "Linux native chameleon driver" );
+	if( swMod )
+	{
+		lstSwModules->add( swMod );
+	}
+
+	return lstSwModules;
+}
 // -----------------------------------------------------------------
 // CPU G23
 

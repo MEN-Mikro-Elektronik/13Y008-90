@@ -63,7 +63,7 @@ public:
 	};
 	
 	Arch getArch() { return X86; }
-
+	virtual SwModuleList *enumSwModules();
 	virtual QString getMainProperties(){
 		return QString("CompactPCI Serial Slot 1 (System Slot)");
 	}
