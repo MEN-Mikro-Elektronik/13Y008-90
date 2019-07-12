@@ -130,7 +130,8 @@ SOURCES       = ../../COM/cfgmakefile.cpp \
 		../../COM/models/modextf503.cpp \
 		../../COM/models/modmdisgeneric.cpp \
 		../../COM/models/modmdischam.cpp \
-		../../COM/models/modmdischamproptab.cpp .moc/moc_devgenericprop.cpp \
+		../../COM/models/modmdischamproptab.cpp \
+		../../COM/models/modserialproptab.cpp .moc/moc_devgenericprop.cpp \
 		.moc/moc_dipbutton.cpp \
 		.moc/moc_dipswitch.cpp \
 		.moc/moc_tristatebutton.cpp \
@@ -151,7 +152,10 @@ SOURCES       = ../../COM/cfgmakefile.cpp \
 		.moc/moc_modbbisa203nproptab.cpp \
 		.moc/moc_modbbischam.cpp \
 		.moc/moc_modbbischamisa.cpp \
-		.moc/moc_modmdischamproptab.cpp
+		.moc/moc_modbbispcigenproptab.cpp \
+		.moc/moc_modbbispcimmodproptab.cpp \
+		.moc/moc_modmdischamproptab.cpp \
+		.moc/moc_modserialproptab.cpp
 OBJECTS       = .obj/cfgmakefile.o \
 		.obj/configuration.o \
 		.obj/descfile.o \
@@ -239,6 +243,7 @@ OBJECTS       = .obj/cfgmakefile.o \
 		.obj/modmdisgeneric.o \
 		.obj/modmdischam.o \
 		.obj/modmdischamproptab.o \
+		.obj/modserialproptab.o \
 		.obj/moc_devgenericprop.o \
 		.obj/moc_dipbutton.o \
 		.obj/moc_dipswitch.o \
@@ -260,7 +265,10 @@ OBJECTS       = .obj/cfgmakefile.o \
 		.obj/moc_modbbisa203nproptab.o \
 		.obj/moc_modbbischam.o \
 		.obj/moc_modbbischamisa.o \
-		.obj/moc_modmdischamproptab.o
+		.obj/moc_modbbispcigenproptab.o \
+		.obj/moc_modbbispcimmodproptab.o \
+		.obj/moc_modmdischamproptab.o \
+		.obj/moc_modserialproptab.o
 DIST          = /usr/local/Trolltech/Qt-4.6.0/mkspecs/common/g++.conf \
 		/usr/local/Trolltech/Qt-4.6.0/mkspecs/common/unix.conf \
 		/usr/local/Trolltech/Qt-4.6.0/mkspecs/common/linux.conf \
@@ -374,7 +382,7 @@ qmake:  FORCE
 
 dist: 
 	@$(CHK_DIR_EXISTS) .obj/mdiswiz1.0.0 || $(MKDIR) .obj/mdiswiz1.0.0 
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .obj/mdiswiz1.0.0/ && $(COPY_FILE) --parents ../../COM/cfgmakefile.h ../../COM/configuration.h ../../COM/descfile.h ../../COM/descriptor.h ../../COM/devgenericprop.h ../../COM/dipbutton.h ../../COM/dipswitch.h ../../COM/tristatebutton.h ../../COM/tristateswitch.h ../../COM/execprogram.h ../../COM/hexeditwidget.h ../../COM/hexspinbox.h ../../COM/hwcomponent.h ../../COM/install.h ../../COM/instnamewidget.h ../../COM/mdiswiz.h ../../COM/mdiswizdialogs.h ../../COM/modelfactory.h ../../COM/namemng.h ../../COM/osfactory.h ../../COM/oslinux.h ../../COM/osvxworks.h ../../COM/osos9.h ../../COM/osqnx.h ../../COM/packagedb.h ../../COM/packagefile.h ../../COM/propertiesdlg.h ../../COM/resourcemng.h ../../COM/setting.h ../../COM/swmodule.h ../../COM/swmodulestab.h ../../COM/targetos.h ../../COM/typestr.h ../../COM/util.h ../../COM/vmsgbox.h ../../COM/wizexcept.h ../../COM/models/esmcarrier.h ../../COM/models/comexprcarrier.h ../../COM/models/modbbisa201.h ../../COM/models/modbbisa201proptab.h ../../COM/models/modbbisa203n.h ../../COM/models/modbbisa203nproptab.h ../../COM/models/modbbischam.h ../../COM/models/modbbischamisa.h ../../COM/models/modbbisisa.h ../../COM/models/modbbispcigen.h ../../COM/models/modbbispcigenproptab.h ../../COM/models/modbbissmbpcigen.h ../../COM/models/modbbissmbisagen.h ../../COM/models/modbbispcimmod.h ../../COM/models/modbbispcimmodproptab.h ../../COM/models/modbbisd203fam.h ../../COM/models/modbbisd203famproptab.h ../../COM/models/modcpua11.h ../../COM/models/modcpua12.h ../../COM/models/modcpua17.h ../../COM/models/modcpua19.h ../../COM/models/modcpua21.h ../../COM/models/modcpub11.h ../../COM/models/modcpucomexpr.h ../../COM/models/modcpucpcipc.h ../../COM/models/modcpucpciserpc.h ../../COM/models/modcpud2.h ../../COM/models/modcpud4.h ../../COM/models/modcpud6.h ../../COM/models/modcpuesm.h ../../COM/models/modcpuesmexpr.h ../../COM/models/modcpuesmini.h ../../COM/models/modcpuf1n.h ../../COM/models/modcpuf2.h ../../COM/models/modcpuf6.h ../../COM/models/modcpuf7.h ../../COM/models/modcpuf9.h ../../COM/models/modcpuf14.h ../../COM/models/modcpuf19p.h ../../COM/models/modcpug20.h ../../COM/models/modcpupc.h ../../COM/models/modcpupp1.h ../../COM/models/modcpusc24.h ../../COM/models/modexta500.h ../../COM/models/modextcomexpr.h ../../COM/models/modextec01.h ../../COM/models/modextf501.h ../../COM/models/modextf503.h ../../COM/models/modmdisgeneric.h ../../COM/models/modmdischam.h ../../COM/models/modmdischamproptab.h .obj/mdiswiz1.0.0/ && $(COPY_FILE) --parents ../../COM/cfgmakefile.cpp ../../COM/configuration.cpp ../../COM/descfile.cpp ../../COM/descriptor.cpp ../../COM/devgenericprop.cpp ../../COM/dipbutton.cpp ../../COM/dipswitch.cpp ../../COM/tristatebutton.cpp ../../COM/tristateswitch.cpp ../../COM/execprogram.cpp ../../COM/hexeditwidget.cpp ../../COM/hwcomponent.cpp ../../COM/install.cpp ../../COM/instnamewidget.cpp ../../COM/main.cpp ../../COM/mdiswiz.cpp ../../COM/modelfactory.cpp ../../COM/namemng.cpp ../../COM/osfactory.cpp ../../COM/oslinux.cpp ../../COM/osos9.cpp ../../COM/osqnx.cpp ../../COM/osvxworks.cpp ../../COM/packagedb.cpp ../../COM/packagefile.cpp ../../COM/propertiesdlg.cpp ../../COM/pkg2dsc.cpp ../../COM/pkg2inf.cpp ../../COM/pkgauto.cpp ../../COM/resourcemng.cpp ../../COM/setting.cpp ../../COM/swmodule.cpp ../../COM/swmodulestab.cpp ../../COM/util.cpp ../../COM/vmsgbox.cpp ../../COM/xmldump.cpp ../../COM/models/esmcarrier.cpp ../../COM/models/comexprcarrier.cpp ../../COM/models/modbbisa201.cpp ../../COM/models/modbbisa201proptab.cpp ../../COM/models/modbbisa203n.cpp ../../COM/models/modbbisa203nproptab.cpp ../../COM/models/modbbischam.cpp ../../COM/models/modbbischamisa.cpp ../../COM/models/modbbisisa.cpp ../../COM/models/modbbispcigen.cpp ../../COM/models/modbbispcigenproptab.cpp ../../COM/models/modbbissmbpcigen.cpp ../../COM/models/modbbissmbisagen.cpp ../../COM/models/modbbispcimmod.cpp ../../COM/models/modbbispcimmodproptab.cpp ../../COM/models/modbbisd203fam.cpp ../../COM/models/modbbisd203famproptab.cpp ../../COM/models/modcpua11.cpp ../../COM/models/modcpua12.cpp ../../COM/models/modcpua17.cpp ../../COM/models/modcpua19.cpp ../../COM/models/modcpua21.cpp ../../COM/models/modcpub11.cpp ../../COM/models/modcpucomexpr.cpp ../../COM/models/modcpucpcipc.cpp ../../COM/models/modcpucpciserpc.cpp ../../COM/models/modcpud2.cpp ../../COM/models/modcpud4.cpp ../../COM/models/modcpud6.cpp ../../COM/models/modcpuesm.cpp ../../COM/models/modcpuesmexpr.cpp ../../COM/models/modcpuesmini.cpp ../../COM/models/modcpuf1n.cpp ../../COM/models/modcpuf2.cpp ../../COM/models/modcpuf6.cpp ../../COM/models/modcpuf7.cpp ../../COM/models/modcpuf9.cpp ../../COM/models/modcpuf14.cpp ../../COM/models/modcpuf19p.cpp ../../COM/models/modcpug20.cpp ../../COM/models/modcpupc.cpp ../../COM/models/modcpupp1.cpp ../../COM/models/modcpusc24.cpp ../../COM/models/modexta500.cpp ../../COM/models/modextcomexpr.cpp ../../COM/models/modextec01.cpp ../../COM/models/modextf501.cpp ../../COM/models/modextf503.cpp ../../COM/models/modmdisgeneric.cpp ../../COM/models/modmdischam.cpp ../../COM/models/modmdischamproptab.cpp .obj/mdiswiz1.0.0/ && (cd `dirname .obj/mdiswiz1.0.0` && $(TAR) mdiswiz1.0.0.tar mdiswiz1.0.0 && $(COMPRESS) mdiswiz1.0.0.tar) && $(MOVE) `dirname .obj/mdiswiz1.0.0`/mdiswiz1.0.0.tar.gz . && $(DEL_FILE) -r .obj/mdiswiz1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .obj/mdiswiz1.0.0/ && $(COPY_FILE) --parents ../../COM/cfgmakefile.h ../../COM/configuration.h ../../COM/descfile.h ../../COM/descriptor.h ../../COM/devgenericprop.h ../../COM/dipbutton.h ../../COM/dipswitch.h ../../COM/tristatebutton.h ../../COM/tristateswitch.h ../../COM/execprogram.h ../../COM/hexeditwidget.h ../../COM/hexspinbox.h ../../COM/hwcomponent.h ../../COM/install.h ../../COM/instnamewidget.h ../../COM/mdiswiz.h ../../COM/mdiswizdialogs.h ../../COM/modelfactory.h ../../COM/namemng.h ../../COM/osfactory.h ../../COM/oslinux.h ../../COM/osvxworks.h ../../COM/osos9.h ../../COM/osqnx.h ../../COM/packagedb.h ../../COM/packagefile.h ../../COM/propertiesdlg.h ../../COM/resourcemng.h ../../COM/setting.h ../../COM/swmodule.h ../../COM/swmodulestab.h ../../COM/targetos.h ../../COM/typestr.h ../../COM/util.h ../../COM/vmsgbox.h ../../COM/wizexcept.h ../../COM/models/esmcarrier.h ../../COM/models/comexprcarrier.h ../../COM/models/modbbisa201.h ../../COM/models/modbbisa201proptab.h ../../COM/models/modbbisa203n.h ../../COM/models/modbbisa203nproptab.h ../../COM/models/modbbischam.h ../../COM/models/modbbischamisa.h ../../COM/models/modbbisisa.h ../../COM/models/modbbispcigen.h ../../COM/models/modbbispcigenproptab.h ../../COM/models/modbbissmbpcigen.h ../../COM/models/modbbissmbisagen.h ../../COM/models/modbbispcimmod.h ../../COM/models/modbbispcimmodproptab.h ../../COM/models/modbbisd203fam.h ../../COM/models/modbbisd203famproptab.h ../../COM/models/modcpua11.h ../../COM/models/modcpua12.h ../../COM/models/modcpua17.h ../../COM/models/modcpua19.h ../../COM/models/modcpua21.h ../../COM/models/modcpub11.h ../../COM/models/modcpucomexpr.h ../../COM/models/modcpucpcipc.h ../../COM/models/modcpucpciserpc.h ../../COM/models/modcpud2.h ../../COM/models/modcpud4.h ../../COM/models/modcpud6.h ../../COM/models/modcpuesm.h ../../COM/models/modcpuesmexpr.h ../../COM/models/modcpuesmini.h ../../COM/models/modcpuf1n.h ../../COM/models/modcpuf2.h ../../COM/models/modcpuf6.h ../../COM/models/modcpuf7.h ../../COM/models/modcpuf9.h ../../COM/models/modcpuf14.h ../../COM/models/modcpuf19p.h ../../COM/models/modcpug20.h ../../COM/models/modcpupc.h ../../COM/models/modcpupp1.h ../../COM/models/modcpusc24.h ../../COM/models/modexta500.h ../../COM/models/modextcomexpr.h ../../COM/models/modextec01.h ../../COM/models/modextf501.h ../../COM/models/modextf503.h ../../COM/models/modmdisgeneric.h ../../COM/models/modmdischam.h ../../COM/models/modmdischamproptab.h ../../COM/models/modserialproptab.h .obj/mdiswiz1.0.0/ && $(COPY_FILE) --parents ../../COM/cfgmakefile.cpp ../../COM/configuration.cpp ../../COM/descfile.cpp ../../COM/descriptor.cpp ../../COM/devgenericprop.cpp ../../COM/dipbutton.cpp ../../COM/dipswitch.cpp ../../COM/tristatebutton.cpp ../../COM/tristateswitch.cpp ../../COM/execprogram.cpp ../../COM/hexeditwidget.cpp ../../COM/hwcomponent.cpp ../../COM/install.cpp ../../COM/instnamewidget.cpp ../../COM/main.cpp ../../COM/mdiswiz.cpp ../../COM/modelfactory.cpp ../../COM/namemng.cpp ../../COM/osfactory.cpp ../../COM/oslinux.cpp ../../COM/osos9.cpp ../../COM/osqnx.cpp ../../COM/osvxworks.cpp ../../COM/packagedb.cpp ../../COM/packagefile.cpp ../../COM/propertiesdlg.cpp ../../COM/pkg2dsc.cpp ../../COM/pkg2inf.cpp ../../COM/pkgauto.cpp ../../COM/resourcemng.cpp ../../COM/setting.cpp ../../COM/swmodule.cpp ../../COM/swmodulestab.cpp ../../COM/util.cpp ../../COM/vmsgbox.cpp ../../COM/xmldump.cpp ../../COM/models/esmcarrier.cpp ../../COM/models/comexprcarrier.cpp ../../COM/models/modbbisa201.cpp ../../COM/models/modbbisa201proptab.cpp ../../COM/models/modbbisa203n.cpp ../../COM/models/modbbisa203nproptab.cpp ../../COM/models/modbbischam.cpp ../../COM/models/modbbischamisa.cpp ../../COM/models/modbbisisa.cpp ../../COM/models/modbbispcigen.cpp ../../COM/models/modbbispcigenproptab.cpp ../../COM/models/modbbissmbpcigen.cpp ../../COM/models/modbbissmbisagen.cpp ../../COM/models/modbbispcimmod.cpp ../../COM/models/modbbispcimmodproptab.cpp ../../COM/models/modbbisd203fam.cpp ../../COM/models/modbbisd203famproptab.cpp ../../COM/models/modcpua11.cpp ../../COM/models/modcpua12.cpp ../../COM/models/modcpua17.cpp ../../COM/models/modcpua19.cpp ../../COM/models/modcpua21.cpp ../../COM/models/modcpub11.cpp ../../COM/models/modcpucomexpr.cpp ../../COM/models/modcpucpcipc.cpp ../../COM/models/modcpucpciserpc.cpp ../../COM/models/modcpud2.cpp ../../COM/models/modcpud4.cpp ../../COM/models/modcpud6.cpp ../../COM/models/modcpuesm.cpp ../../COM/models/modcpuesmexpr.cpp ../../COM/models/modcpuesmini.cpp ../../COM/models/modcpuf1n.cpp ../../COM/models/modcpuf2.cpp ../../COM/models/modcpuf6.cpp ../../COM/models/modcpuf7.cpp ../../COM/models/modcpuf9.cpp ../../COM/models/modcpuf14.cpp ../../COM/models/modcpuf19p.cpp ../../COM/models/modcpug20.cpp ../../COM/models/modcpupc.cpp ../../COM/models/modcpupp1.cpp ../../COM/models/modcpusc24.cpp ../../COM/models/modexta500.cpp ../../COM/models/modextcomexpr.cpp ../../COM/models/modextec01.cpp ../../COM/models/modextf501.cpp ../../COM/models/modextf503.cpp ../../COM/models/modmdisgeneric.cpp ../../COM/models/modmdischam.cpp ../../COM/models/modmdischamproptab.cpp ../../COM/models/modserialproptab.cpp .obj/mdiswiz1.0.0/ && (cd `dirname .obj/mdiswiz1.0.0` && $(TAR) mdiswiz1.0.0.tar mdiswiz1.0.0 && $(COMPRESS) mdiswiz1.0.0.tar) && $(MOVE) `dirname .obj/mdiswiz1.0.0`/mdiswiz1.0.0.tar.gz . && $(DEL_FILE) -r .obj/mdiswiz1.0.0
 
 
 clean:compiler_clean 
@@ -393,9 +401,9 @@ mocclean: compiler_moc_header_clean compiler_moc_source_clean
 
 mocables: compiler_moc_header_make_all compiler_moc_source_make_all
 
-compiler_moc_header_make_all: .moc/moc_devgenericprop.cpp .moc/moc_dipbutton.cpp .moc/moc_dipswitch.cpp .moc/moc_tristatebutton.cpp .moc/moc_tristateswitch.cpp .moc/moc_execprogram.cpp .moc/moc_hwcomponent.cpp .moc/moc_install.cpp .moc/moc_mdiswiz.cpp .moc/moc_mdiswizdialogs.cpp .moc/moc_oslinux.cpp .moc/moc_osvxworks.cpp .moc/moc_osos9.cpp .moc/moc_osqnx.cpp .moc/moc_propertiesdlg.cpp .moc/moc_setting.cpp .moc/moc_swmodulestab.cpp .moc/moc_modbbisa201proptab.cpp .moc/moc_modbbisa203nproptab.cpp .moc/moc_modbbischam.cpp .moc/moc_modbbischamisa.cpp .moc/moc_modmdischamproptab.cpp
+compiler_moc_header_make_all: .moc/moc_devgenericprop.cpp .moc/moc_dipbutton.cpp .moc/moc_dipswitch.cpp .moc/moc_tristatebutton.cpp .moc/moc_tristateswitch.cpp .moc/moc_execprogram.cpp .moc/moc_hwcomponent.cpp .moc/moc_install.cpp .moc/moc_mdiswiz.cpp .moc/moc_mdiswizdialogs.cpp .moc/moc_oslinux.cpp .moc/moc_osvxworks.cpp .moc/moc_osos9.cpp .moc/moc_osqnx.cpp .moc/moc_propertiesdlg.cpp .moc/moc_setting.cpp .moc/moc_swmodulestab.cpp .moc/moc_modbbisa201proptab.cpp .moc/moc_modbbisa203nproptab.cpp .moc/moc_modbbischam.cpp .moc/moc_modbbischamisa.cpp .moc/moc_modbbispcigenproptab.cpp .moc/moc_modbbispcimmodproptab.cpp .moc/moc_modmdischamproptab.cpp .moc/moc_modserialproptab.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) .moc/moc_devgenericprop.cpp .moc/moc_dipbutton.cpp .moc/moc_dipswitch.cpp .moc/moc_tristatebutton.cpp .moc/moc_tristateswitch.cpp .moc/moc_execprogram.cpp .moc/moc_hwcomponent.cpp .moc/moc_install.cpp .moc/moc_mdiswiz.cpp .moc/moc_mdiswizdialogs.cpp .moc/moc_oslinux.cpp .moc/moc_osvxworks.cpp .moc/moc_osos9.cpp .moc/moc_osqnx.cpp .moc/moc_propertiesdlg.cpp .moc/moc_setting.cpp .moc/moc_swmodulestab.cpp .moc/moc_modbbisa201proptab.cpp .moc/moc_modbbisa203nproptab.cpp .moc/moc_modbbischam.cpp .moc/moc_modbbischamisa.cpp .moc/moc_modmdischamproptab.cpp
+	-$(DEL_FILE) .moc/moc_devgenericprop.cpp .moc/moc_dipbutton.cpp .moc/moc_dipswitch.cpp .moc/moc_tristatebutton.cpp .moc/moc_tristateswitch.cpp .moc/moc_execprogram.cpp .moc/moc_hwcomponent.cpp .moc/moc_install.cpp .moc/moc_mdiswiz.cpp .moc/moc_mdiswizdialogs.cpp .moc/moc_oslinux.cpp .moc/moc_osvxworks.cpp .moc/moc_osos9.cpp .moc/moc_osqnx.cpp .moc/moc_propertiesdlg.cpp .moc/moc_setting.cpp .moc/moc_swmodulestab.cpp .moc/moc_modbbisa201proptab.cpp .moc/moc_modbbisa203nproptab.cpp .moc/moc_modbbischam.cpp .moc/moc_modbbischamisa.cpp .moc/moc_modbbispcigenproptab.cpp .moc/moc_modbbispcimmodproptab.cpp .moc/moc_modmdischamproptab.cpp .moc/moc_modserialproptab.cpp
 .moc/moc_devgenericprop.cpp: ../../COM/propertiesdlg.h \
 		../../COM/models/modmdisgeneric.h \
 		../../COM/hwcomponent.h \
@@ -531,6 +539,9 @@ compiler_moc_header_clean:
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/models/modbbischam.h
 	/usr/local/Trolltech/Qt-4.6.0/bin/moc $(DEFINES) $(INCPATH) ../../COM/models/modbbischam.h -o .moc/moc_modbbischam.cpp
@@ -544,8 +555,31 @@ compiler_moc_header_clean:
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/models/modbbischamisa.h
 	/usr/local/Trolltech/Qt-4.6.0/bin/moc $(DEFINES) $(INCPATH) ../../COM/models/modbbischamisa.h -o .moc/moc_modbbischamisa.cpp
+
+.moc/moc_modbbispcigenproptab.cpp: ../../COM/propertiesdlg.h \
+		../../COM/models/modbbispcigen.h \
+		../../COM/hwcomponent.h \
+		../../COM/swmodule.h \
+		../../COM/typestr.h \
+		../../COM/descriptor.h \
+		../../COM/models/modbbissmbpcigen.h \
+		../../COM/models/modbbispcimmod.h \
+		../../COM/models/modbbispcigenproptab.h
+	/usr/local/Trolltech/Qt-4.6.0/bin/moc $(DEFINES) $(INCPATH) ../../COM/models/modbbispcigenproptab.h -o .moc/moc_modbbispcigenproptab.cpp
+
+.moc/moc_modbbispcimmodproptab.cpp: ../../COM/propertiesdlg.h \
+		../../COM/models/modbbispcimmod.h \
+		../../COM/hwcomponent.h \
+		../../COM/swmodule.h \
+		../../COM/typestr.h \
+		../../COM/descriptor.h \
+		../../COM/models/modbbispcimmodproptab.h
+	/usr/local/Trolltech/Qt-4.6.0/bin/moc $(DEFINES) $(INCPATH) ../../COM/models/modbbispcimmodproptab.h -o .moc/moc_modbbispcimmodproptab.cpp
 
 .moc/moc_modmdischamproptab.cpp: ../../COM/propertiesdlg.h \
 		../../COM/hwcomponent.h \
@@ -556,6 +590,15 @@ compiler_moc_header_clean:
 		../../COM/util.h \
 		../../COM/models/modmdischamproptab.h
 	/usr/local/Trolltech/Qt-4.6.0/bin/moc $(DEFINES) $(INCPATH) ../../COM/models/modmdischamproptab.h -o .moc/moc_modmdischamproptab.cpp
+
+.moc/moc_modserialproptab.cpp: ../../COM/propertiesdlg.h \
+		../../COM/models/modbbispcimmod.h \
+		../../COM/hwcomponent.h \
+		../../COM/swmodule.h \
+		../../COM/typestr.h \
+		../../COM/descriptor.h \
+		../../COM/models/modserialproptab.h
+	/usr/local/Trolltech/Qt-4.6.0/bin/moc $(DEFINES) $(INCPATH) ../../COM/models/modserialproptab.h -o .moc/moc_modserialproptab.cpp
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
@@ -601,7 +644,8 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbischam.h \
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
-		../../COM/propertiesdlg.h
+		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/configuration.o ../../COM/configuration.cpp
 
 .obj/descfile.o: ../../COM/descfile.cpp ../../COM/wizdebug.h \
@@ -754,6 +798,9 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/models/modbbisisa.h \
 		../../COM/models/modbbispcigen.h \
@@ -770,7 +817,6 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modcpuesm.h \
 		../../COM/models/modextf501.h \
 		../../COM/models/esmcarrier.h \
-		../../COM/wizexcept.h \
 		../../COM/models/modexta500.h \
 		../../COM/models/modcpupp1.h \
 		../../COM/models/modcpuf1n.h \
@@ -1172,18 +1218,20 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/models/modmdischam.h \
 		../../COM/models/modmdisgeneric.h \
 		../../COM/devgenericprop.h \
 		../../COM/models/modbbissmbpcigen.h \
 		../../COM/models/modbbispcigen.h \
+		../../COM/models/modserialproptab.h \
 		../../COM/wizdebug.h \
 		../../COM/mdiswiz.h \
 		../../COM/configuration.h \
 		../../COM/namemng.h \
-		../../COM/wizexcept.h \
-		../../COM/setting.h \
 		../../COM/resourcemng.h \
 		../../COM/vmsgbox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modbbischam.o ../../COM/models/modbbischam.cpp
@@ -1198,6 +1246,9 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/models/modmdischam.h \
 		../../COM/models/modmdisgeneric.h \
 		../../COM/devgenericprop.h \
@@ -1207,8 +1258,6 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/mdiswiz.h \
 		../../COM/configuration.h \
 		../../COM/namemng.h \
-		../../COM/wizexcept.h \
-		../../COM/setting.h \
 		../../COM/resourcemng.h \
 		../../COM/vmsgbox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modbbischamisa.o ../../COM/models/modbbischamisa.cpp
@@ -1270,12 +1319,13 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbischam.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/models/modbbispcigenproptab.h \
 		../../COM/configuration.h \
 		../../COM/namemng.h \
-		../../COM/wizexcept.h \
-		../../COM/setting.h \
 		../../COM/devgenericprop.h \
 		../../COM/models/modmdisgeneric.h \
 		../../COM/wizdebug.h \
@@ -1292,14 +1342,15 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/models/modbbispcigenproptab.h \
 		../../COM/models/modbbispcigen.h \
 		../../COM/models/modbbissmbpcigen.h \
 		../../COM/configuration.h \
 		../../COM/namemng.h \
-		../../COM/wizexcept.h \
-		../../COM/setting.h \
 		../../COM/devgenericprop.h \
 		../../COM/models/modmdisgeneric.h \
 		../../COM/wizdebug.h \
@@ -1344,6 +1395,7 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/propertiesdlg.h \
 		../../COM/models/modbbisd203fam.h \
 		../../COM/models/modbbisd203famproptab.h \
+		../../COM/models/modserialproptab.h \
 		../../COM/wizdebug.h \
 		../../COM/configuration.h \
 		../../COM/namemng.h \
@@ -1406,9 +1458,11 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/resourcemng.h \
-		../../COM/wizexcept.h \
 		../../COM/wizdebug.h \
 		../../COM/models/modbbissmbpcigen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modcpua17.o ../../COM/models/modcpua17.cpp
@@ -1424,9 +1478,11 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/resourcemng.h \
-		../../COM/wizexcept.h \
 		../../COM/wizdebug.h \
 		../../COM/models/modbbissmbpcigen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modcpua19.o ../../COM/models/modcpua19.cpp
@@ -1441,10 +1497,13 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/wizdebug.h \
 		../../COM/resourcemng.h \
-		../../COM/wizexcept.h
+		../../COM/models/modbbissmbpcigen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modcpua21.o ../../COM/models/modcpua21.cpp
 
 .obj/modcpub11.o: ../../COM/models/modcpub11.cpp ../../COM/models/modcpub11.h \
@@ -1468,9 +1527,11 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/resourcemng.h \
-		../../COM/wizexcept.h \
 		../../COM/wizdebug.h \
 		../../COM/models/modbbissmbpcigen.h \
 		../../COM/models/modbbispcigen.h \
@@ -1532,6 +1593,8 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
 		../../COM/util.h \
 		../../COM/models/modbbissmbpcigen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modcpud6.o ../../COM/models/modcpud6.cpp
@@ -1551,6 +1614,8 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
 		../../COM/util.h \
 		../../COM/resourcemng.h \
 		../../COM/wizdebug.h \
@@ -1566,9 +1631,11 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/resourcemng.h \
-		../../COM/wizexcept.h \
 		../../COM/wizdebug.h \
 		../../COM/models/modbbissmbpcigen.h \
 		../../COM/models/modbbispcigen.h \
@@ -1585,9 +1652,11 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
+		../../COM/wizexcept.h \
 		../../COM/util.h \
 		../../COM/resourcemng.h \
-		../../COM/wizexcept.h \
 		../../COM/wizdebug.h \
 		../../COM/models/modbbissmbpcigen.h \
 		../../COM/models/modbbispcigen.h \
@@ -1656,6 +1725,8 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbischam.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
 		../../COM/util.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modcpuf9.o ../../COM/models/modcpuf9.cpp
 
@@ -1745,8 +1816,10 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
 		../../COM/propertiesdlg.h \
-		../../COM/wizdebug.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h \
 		../../COM/wizexcept.h \
+		../../COM/wizdebug.h \
 		../../COM/models/modbbisisa.h \
 		../../COM/models/modbbissmbpcigen.h \
 		../../COM/models/modbbispcigen.h
@@ -1777,7 +1850,9 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/descriptor.h \
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
-		../../COM/propertiesdlg.h
+		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modextcomexpr.o ../../COM/models/modextcomexpr.cpp
 
 .obj/modextec01.o: ../../COM/models/modextec01.cpp ../../COM/models/modextec01.h \
@@ -1813,7 +1888,9 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/descriptor.h \
 		../../COM/models/modbbispcimmod.h \
 		../../COM/models/modbbispcimmodproptab.h \
-		../../COM/propertiesdlg.h
+		../../COM/propertiesdlg.h \
+		../../COM/models/modmdischamproptab.h \
+		../../COM/setting.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modextf503.o ../../COM/models/modextf503.cpp
 
 .obj/modmdisgeneric.o: ../../COM/models/modmdisgeneric.cpp ../../COM/wizdebug.h \
@@ -1870,6 +1947,18 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/wizdebug.h \
 		../../COM/vmsgbox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modmdischamproptab.o ../../COM/models/modmdischamproptab.cpp
+
+.obj/modserialproptab.o: ../../COM/models/modserialproptab.cpp ../../COM/models/modserialproptab.h \
+		../../COM/propertiesdlg.h \
+		../../COM/models/modbbispcimmod.h \
+		../../COM/hwcomponent.h \
+		../../COM/swmodule.h \
+		../../COM/typestr.h \
+		../../COM/descriptor.h \
+		../../COM/wizdebug.h \
+		../../COM/wizexcept.h \
+		../../COM/resourcemng.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/modserialproptab.o ../../COM/models/modserialproptab.cpp
 
 .obj/moc_devgenericprop.o: .moc/moc_devgenericprop.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/moc_devgenericprop.o .moc/moc_devgenericprop.cpp
@@ -1934,25 +2023,23 @@ compiler_clean: compiler_moc_header_clean
 .obj/moc_modbbischamisa.o: .moc/moc_modbbischamisa.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/moc_modbbischamisa.o .moc/moc_modbbischamisa.cpp
 
+.obj/moc_modbbispcigenproptab.o: .moc/moc_modbbispcigenproptab.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/moc_modbbispcigenproptab.o .moc/moc_modbbispcigenproptab.cpp
+
+.obj/moc_modbbispcimmodproptab.o: .moc/moc_modbbispcimmodproptab.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/moc_modbbispcimmodproptab.o .moc/moc_modbbispcimmodproptab.cpp
+
 .obj/moc_modmdischamproptab.o: .moc/moc_modmdischamproptab.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/moc_modmdischamproptab.o .moc/moc_modmdischamproptab.cpp
 
+.obj/moc_modserialproptab.o: .moc/moc_modserialproptab.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/moc_modserialproptab.o .moc/moc_modserialproptab.cpp
+
 ####### Install
 
-install_target: first FORCE
-	@$(CHK_DIR_EXISTS) $(INSTALL_ROOT)/disc/users/ts/work/LINUX/TOOLS/MDISWIZ/NATIVE/DIST_GCC3/../../../../BIN/ || $(MKDIR) $(INSTALL_ROOT)/disc/users/ts/work/LINUX/TOOLS/MDISWIZ/NATIVE/DIST_GCC3/../../../../BIN/ 
-	-$(INSTALL_PROGRAM) /disc/users/ts/work/LINUX/TOOLS/MDISWIZ/NATIVE/DIST_GCC3/mdiswiz $(INSTALL_ROOT)/disc/users/ts/work/LINUX/TOOLS/MDISWIZ/NATIVE/DIST_GCC3/../../../../BIN/
-	-strip $(INSTALL_ROOT)/disc/users/ts/work/LINUX/TOOLS/MDISWIZ/NATIVE/DIST_GCC3/../../../../BIN/mdiswiz
+install:   FORCE
 
-
-uninstall_target:  FORCE
-	-$(DEL_FILE) -r $(INSTALL_ROOT)/disc/users/ts/work/LINUX/TOOLS/MDISWIZ/NATIVE/DIST_GCC3/../../../../BIN/mdiswiz
-	-$(DEL_DIR) $(INSTALL_ROOT)/disc/users/ts/work/LINUX/TOOLS/MDISWIZ/NATIVE/DIST_GCC3/../../../../BIN/ 
-
-
-install:  install_target  FORCE
-
-uninstall: uninstall_target   FORCE
+uninstall:   FORCE
 
 FORCE:
 
