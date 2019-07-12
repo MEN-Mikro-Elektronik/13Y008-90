@@ -39,7 +39,7 @@ static const char *fileopen_xpm[]={
 "c c #fec383",
 "e c #fec88a",
 "b c #fed39a",
-". c #ffffff",
+". c None",
 "......####......",
 ".....##.####.#..",
 "....#.....####..",
