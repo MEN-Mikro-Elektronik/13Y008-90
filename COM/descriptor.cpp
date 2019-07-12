@@ -469,7 +469,7 @@ void DescriptorEntryDirectory::print( Q3TextStream &stream, int indent )
 		}
 		else if ( (entry->getKey() == "SMB_BUSNBR") && entry->isActive() ) {
 			QString helptxt="------------------------------------------------------------------------\n"\
-							" 		SMBus parameters\n"\
+							"          SMBus parameters\n"\
 							"------------------------------------------------------------------------\n";
 			entry->print(stream,helptxt,1);
 		}
@@ -479,7 +479,7 @@ void DescriptorEntryDirectory::print( Q3TextStream &stream, int indent )
 				  (entry->getKey() == "SKIP_DEV_BRIDGE_CHECK")
 				 ) && entry->isActive() && !pciConfigAlreadyPrinted ) {
 			QString helptxt="------------------------------------------------------------------------\n"\
-							" 		PCI configuration\n"\
+							"       PCI configuration\n"\
 							"------------------------------------------------------------------------\n";
 			entry->print(stream,helptxt,1);
 			pciConfigAlreadyPrinted = true;

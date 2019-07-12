@@ -111,13 +111,11 @@ ModBbisPciGenPropTab::ModBbisPciGenPropTab(
 	DevPropertiesTab(parent,_mainDlg,name,f)
 {
 	PciBusInterface *busIf;
+
 	int row = 0;
 	wDebug(("ModBbisPciGenPropTab::ModBbisPciGenPropTab"));
-	
 	WIZ_DYNAMIC_CAST( (getMainDlg()->getDevice()->getParent()), busIf,
 					  PciBusInterface * );
-
-	QString devModelName = getMainDlg()->getDevice()->getInstName();
 
 	hasPciBusPath = busIf->hasPciBusPath();
 
@@ -127,14 +125,18 @@ ModBbisPciGenPropTab::ModBbisPciGenPropTab(
 
 	Q3VBoxLayout *vb = new Q3VBoxLayout( this, 10 );
 	QLabel *lab = new QLabel( this );
-	vb->addWidget( lab );
-	
-	Q3GridLayout *gl = new Q3GridLayout( vb, 3, 2 );
-	vb->addLayout( gl );
-
 	// Bus domain
+	lab->setText( QString("Enter the %1 slot number of this "
+						  "carrier board").
+				  arg(busIf->busIfTypeMap.keyToStr(
+					  busIf->getBusIfType())));
+	vb->addWidget( lab );
+
+	//Q3VBoxLayout *vb2 = new Q3VBoxLayout( vb );
+	Q3GridLayout *gl = new Q3GridLayout( vb, 0, 2, 10);
 
 	// add widgets for pci domain (only shown if necessary)
+
 	QLabel* domLabel = new QLabel( QString("PCI Domain:"), this );
 	gl->addWidget( domLabel, row, 0, Qt::AlignRight );
 		
@@ -147,61 +149,80 @@ ModBbisPciGenPropTab::ModBbisPciGenPropTab(
 		pciDomNoSpBox->setHidden(true);
 	}
 
-	if( hasPciBusPath ){
-
-		//
-		// Bus interface bus path is known, simply ask for slot
-		//
-		lab->setText( QString("Enter the %1 slot number of this "
-							  "carrier board").
-					  arg(busIf->busIfTypeMap.keyToStr(
-						  busIf->getBusIfType())));
-
-		QLabel *lab1 = new QLabel("Slot:", this );
-		if ( busIf->getBusIfType() == HwComponent::Cpci ) {
-			lab1->setText("Slot (System Slot is 1, asc.)");
-		}
-		gl->addWidget( lab1, row, 0, Qt::AlignRight );
-
-		pciSlotCbox = new Q3ComboBox( false, this );
-		gl->addWidget( pciSlotCbox, row, 1, Qt::AlignLeft );
-		row ++;
-
-		// only one slot? or f223 ->grey it up
-		if( busIf->getNbrOfSlots() == 1 || devModelName.contains("f223") ) {
-		lab1->setEnabled(false);
-		pciSlotCbox->setEnabled(false);
-		}
+	//
+	// Bus interface bus path is known, simply ask for slot
+	//
+	QLabel *lab1 = new QLabel("Slot:", this );
+	if ( busIf->getBusIfType() == HwComponent::Cpci ) {
+		lab1->setText("Slot (System Slot is 1, asc.)");
 	}
-	else {
-		//
-		// Bus interface bus path is unknown, ask for bus/device number
-		//
-		// QString("<font color=\"red\">Enter PCI bus number shown by 'lspci' command for this carrier!\n</font>)
-		lab = new QLabel( QString("<font color=\"red\">Enter PCI bus nr. shown by 'lspci' command for this carrier!\n</font>"), this );
-		vb->addWidget( lab );
+	gl->addWidget( lab1, row, 0, Qt::AlignLeft );
+	pciSlotCbox = new Q3ComboBox( false, this );
+	gl->addWidget( pciSlotCbox, row, 0, Qt::AlignRight );
+	row++;
 
-		// Bus number
-		lab = new QLabel( QString("PCI Bus Number:"), this );
-		gl->addWidget( lab, row, 0, Qt::AlignRight );
+	pciBusSlotParameter = new QCheckBox(QString("Use BUS and DEVICE number "
+			"instead of BUS_SLOT?"), this);
+	gl->addWidget( pciBusSlotParameter, row, 0, Qt::AlignCenter );
+	row++;
 
-		pciBusNoSpBox = new QSpinBox( 0, 255, 1, this );
-		gl->addWidget( pciBusNoSpBox, row, 1, Qt::AlignLeft );
-		row++;
+	// Bus interface bus path is unknown, ask for bus/device number
+	pciBusNoInfo0 = new QLabel( QString(""), this );
+	pciBusNoInfo0->setText( QString("Enter PCI settings: <font color=\"red\">use PCI bus nr. from 'lspci' command!</font>") );
+	gl->addWidget( pciBusNoInfo0, row, 0, Qt::AlignLeft );
+	row++;
+	pciBusNoInfo1 = new QLabel( QString(""), this );
+	pciBusNoInfo1->setText( QString("No validity check will be done") );
+	gl->addWidget( pciBusNoInfo1, row, 0, Qt::AlignLeft );
+	row++;
 
-		// Device number
-		lab = new QLabel( QString("PCI Device Number:"), this );	
-		gl->addWidget( lab, row, 0, Qt::AlignRight );
+	// Bus number
+	pciBusNoLabel = new QLabel( QString("PCI Bus Number:"), this );
+	gl->addWidget( pciBusNoLabel, row, 0, Qt::AlignLeft );
+	pciBusNoSpBox = new QSpinBox( 0, 255, 1, this );
+	gl->addWidget( pciBusNoSpBox, row,  0, Qt::AlignCenter );
+	row++;
 
-		pciDevNoSpBox = new QSpinBox( 0, 31, 1, this );
-		gl->addWidget( pciDevNoSpBox, row, 1, Qt::AlignLeft );
-		row++;	
+	// Device number
+	pciDevNoLabel = new QLabel( QString("PCI Device Number:"), this );
+	gl->addWidget( pciDevNoLabel, row, 0, Qt::AlignLeft );
+	pciDevNoSpBox = new QSpinBox( 0, 31, 1, this );
+	gl->addWidget( pciDevNoSpBox, row, 0, Qt::AlignCenter);
 
-		// PCI device number of PCIe endpoints is always 0, grey it up
-		if( busIf->getIsPciE() ){
-			lab->setEnabled(false);
-			pciDevNoSpBox->setEnabled(false);
-		}
+	lab = new QLabel( QString(""), this );
+	gl->addWidget( lab, row, 1, Qt::AlignLeft );
+
+	// PCI device number of PCIe endpoints is always 0, grey it up
+	if( busIf->getIsPciE() ){
+		lab->setEnabled(false);
+		pciDevNoSpBox->setEnabled(false);
+	}
+	// connect pciBusSlotParameter checkbox and
+	connect(pciBusSlotParameter, SIGNAL(stateChanged(int)), this, SLOT(enablePciFields(int)));
+	vb->addStretch( 10 );
+
+
+	QString devModelName = getMainDlg()->getDevice()->getInstName();
+
+	pciDomNoSpBox = new QSpinBox( 0, 31, 1, this );
+	gl->addWidget( pciDomNoSpBox, row, 1, Qt::AlignLeft );
+	row++;
+
+	if( busIf->getPciDomainNoUnknown() == false ){
+		domLabel->setHidden(true);
+		pciDomNoSpBox->setHidden(true);
+	}
+
+	// only one slot? or f223 ->grey it up
+	if( busIf->getNbrOfSlots() == 1 || devModelName.contains("f223") ) {
+	lab1->setEnabled(false);
+	pciSlotCbox->setEnabled(false);
+	}
+
+	// PCI device number of PCIe endpoints is always 0, grey it up
+	if( busIf->getIsPciE() ){
+		lab->setEnabled(false);
+		pciDevNoSpBox->setEnabled(false);
 	}
 }
 
@@ -212,12 +233,19 @@ ModBbisPciGenPropTab::updateProperties()
 	WIZ_DYNAMIC_CAST( getMainDlg()->getProperties(), _prop,
 					  ModBbisPciGenProperties *);
 
-	if( hasPciBusPath ){
-		_prop->slotNo = pciSlotCbox->currentText().toInt();
+	_prop->useSlotNo=!pciBusSlotParameter->isChecked();
+
+	_prop->slotNo = pciSlotCbox->currentText().toInt();
+	_prop->pciBusNo = pciBusNoSpBox->value();
+	_prop->pciDevNo = pciDevNoSpBox->value();
+
+	if ( _prop->useSlotNo ) {
+		_prop->pciBusNoIsDef = false;
+		_prop->pciDevNoIsDef = false;
 	}
-	else{
-		_prop->pciBusNo = pciBusNoSpBox->value();
-		_prop->pciDevNo = pciDevNoSpBox->value();
+	else {
+		_prop->pciBusNoIsDef = true;
+		_prop->pciDevNoIsDef = true;
 	}
 		
 	_prop->pciDomainNo = pciDomNoSpBox->value();
@@ -227,30 +255,55 @@ void
 ModBbisPciGenPropTab::setProperties()
 {
 	ModBbisPciGenProperties *_prop;
+
 	WIZ_DYNAMIC_CAST( (getMainDlg()->getProperties()), _prop,
-					  ModBbisPciGenProperties *);
+			ModBbisPciGenProperties *);
 					  
 	PciBusInterface *busIf;
-		WIZ_DYNAMIC_CAST( (getMainDlg()->getDevice()->getParent()), busIf,
-						  PciBusInterface * );
-	if( hasPciBusPath ){
-		while( pciSlotCbox->count() )	// remove old items
-			pciSlotCbox->removeItem(0);
+	WIZ_DYNAMIC_CAST( (getMainDlg()->getDevice()->getParent()), busIf,
+						PciBusInterface * );
 
-		for( int slt=0; slt<100; slt++ ){
-			HwComponent *owner;
-			if( slt==_prop->slotNo ||
-				busIf->pciSlots->isAvail( slt, 1, &owner ) ==
-				ResourceMng::Avail ){
-				wDebug(("isAVail %d", slt ));
-				pciSlotCbox->insertItem(QString("%1").arg(slt));
-			}
+	pciBusSlotParameter->setChecked( !_prop->useSlotNo );
+
+	while( pciSlotCbox->count() )	// remove old items
+		pciSlotCbox->removeItem(0);
+
+	for( int slt=0; slt<100; slt++ ){
+		HwComponent *owner;
+		if( slt==_prop->slotNo ||
+			busIf->pciSlots->isAvail( slt, 1, &owner ) ==
+			ResourceMng::Avail ){
+			wDebug(("isAVail %d", slt ));
+			pciSlotCbox->insertItem(QString("%1").arg(slt));
 		}
-		pciSlotCbox->setCurrentText(QString("%1").arg(_prop->slotNo ));
 	}
-	else{
-		pciBusNoSpBox->setValue( _prop->pciBusNo );
-		pciDevNoSpBox->setValue( _prop->pciDevNo );
+
+	pciSlotCbox->setCurrentText(QString("%1").arg(_prop->slotNo ));
+
+	pciBusNoSpBox->setValue( _prop->pciBusNo );
+	pciDevNoSpBox->setValue( _prop->pciDevNo );
+
+	if ( _prop->useSlotNo ) {
+		pciSlotCbox->setEnabled(true);
+		pciBusNoSpBox->setEnabled(false);
+		pciDevNoSpBox->setEnabled(false);
+		pciBusNoInfo0->setHidden(true);
+		pciBusNoInfo1->setHidden(true);
+		pciBusNoLabel->setHidden(true);
+		pciDevNoLabel->setHidden(true);
+		pciBusNoSpBox->setHidden(true);
+		pciDevNoSpBox->setHidden(true);
+	}
+	else {
+		pciSlotCbox->setEnabled(false);
+		pciBusNoSpBox->setEnabled(true);
+		pciDevNoSpBox->setEnabled(true);
+		pciBusNoInfo0->setHidden(false);
+		pciBusNoInfo1->setHidden(false);
+		pciBusNoLabel->setHidden(false);
+		pciDevNoLabel->setHidden(false);
+		pciBusNoSpBox->setHidden(false);
+		pciDevNoSpBox->setHidden(false);
 	}
 	
 	if (busIf && (_prop->pciDomainNo == 0) )
@@ -260,6 +313,34 @@ ModBbisPciGenPropTab::setProperties()
 
 }
 
+void
+ModBbisPciGenPropTab::enablePciFields(int state)
+{
+	wDebug(("ModBbisPciGenPropTab::enablePciFields"));
+	if (state == QCheckBox::On) {
+		wDebug(("pciSlotCbox->setEnabled(false);"));
+		pciSlotCbox->setEnabled(false);
+		pciBusNoInfo0->setHidden(false);
+		pciBusNoInfo1->setHidden(false);
+		pciBusNoLabel->setHidden(false);
+		pciDevNoLabel->setHidden(false);
+		pciBusNoSpBox->setHidden(false);
+		pciDevNoSpBox->setHidden(false);
+		pciBusNoSpBox->setEnabled(true);
+		pciDevNoSpBox->setEnabled(true);
+	} else {
+		wDebug(("pciSlotCbox->setEnabled(true);"));
+		pciSlotCbox->setEnabled(true);
+		pciBusNoInfo0->setHidden(true);
+		pciBusNoInfo1->setHidden(true);
+		pciBusNoLabel->setHidden(true);
+		pciDevNoLabel->setHidden(true);
+		pciBusNoSpBox->setHidden(true);
+		pciDevNoSpBox->setHidden(true);
+		pciBusNoSpBox->setEnabled(false);
+		pciDevNoSpBox->setEnabled(false);
+	}
+}
 
 ModBbisSmbPciGenPropTab::ModBbisSmbPciGenPropTab(
 	QWidget *parent,

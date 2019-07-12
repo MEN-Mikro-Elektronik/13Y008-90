@@ -3075,7 +3075,7 @@ void LinuxMdiswiz::slotScan()
 {
 	QStringList args;
 	//pass MEN_LIN_DIR to script
-	args << "sh" << "-c" << menLinuxPath + "/scan_system.sh " + menLinuxPath ;
+	args << "sh" << "-c" << menLinuxPath + "/scan_system.sh " + menLinuxPath + " --mdiswiz";
 	doBuild( "Scanning system and generating example system.dsc", args, 1 );
 }
 

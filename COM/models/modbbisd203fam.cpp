@@ -66,6 +66,7 @@
 #include "modbbispcimmodproptab.h"
 #include "modbbisd203fam.h"
 #include "modbbisd203famproptab.h"
+#include "modserialproptab.h"
 #include "wizdebug.h"
 #include "configuration.h"
 #include "resourcemng.h"
@@ -202,10 +203,15 @@ ModBbisD203Family::createPropDlg( QWidget *parent )
 	// don't show properties dlg
 	PciBusInterface *busIf;
 	WIZ_DYNAMIC_CAST( getParent(), busIf, PciBusInterface * );
-	if( (busIf->getIsPciE() && !busIf->hasPciBusPath()) || !busIf->getIsPciE() ){
+	if( (!busIf->getIsPciE()) ){
 	    dp->addTab( (tabCpci = new ModBbisPciMmodPropTab(parent, dp)),
 	                QString("%1 Settings").arg( busIfTypeMap.keyToStr(
 	                    getBusIfType() )));
+	}
+	else {
+		dp->addTab( (tabCpci = new ModSerialPropTab(parent, dp)),
+					QString("%1 Settings").arg( busIfTypeMap.keyToStr(
+						getBusIfType() )));
 	}
 
 	dp->addTab( (tabD203 = new ModBbisD203FamPropTab(getSlots(), parent, dp)),
@@ -229,7 +235,6 @@ ModBbisD203Family::createPropDlg4Win( QWidget *parent )
 
 	dp->addTab( (tabD203 = new ModBbisD203FamPropTab(getSlots(), parent, dp)),
 				QString("Trigger Line Settings") );
-
 
 	dp->setOkButton();
 	dp->setCancelButton();
@@ -475,6 +480,7 @@ ModBbisD203Family::applyProperties( DescriptorEntryDirectory *devDesc,
 		else if( key == "PCI_BUS_NUMBER" ){
 			WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
 			_prop->pciBusNo = eUint32->getValue();
+			_prop->pciBusNoIsDef=true;
 		}
 		else if ( key == "PCI_DOMAIN_NUMBER" ) {
         	WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
@@ -483,6 +489,7 @@ ModBbisD203Family::applyProperties( DescriptorEntryDirectory *devDesc,
 		else if( key == "PCI_DEVICE_ID" ){
 			WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
 			_prop->pciDevNo = eUint32->getValue();
+			_prop->pciDevNoIsDef=true;
 		}
 		else if( key == "PCI_BUS_PATH" ) {
         	Q3MemArray<uchar> parentBusPath;
@@ -559,6 +566,7 @@ ModBbisD203Family::applyProperties( DescriptorEntryDirectory *devDesc,
 			e->getParent()->removeChild(e);
 
 	}
+	_prop->useSlotNo = ( !_prop->usePciBusNoAndDevNo()) ;
 
 	return Device::applyProperties( devDesc, errMsg );
 }
@@ -582,14 +590,13 @@ ModBbisD203Family::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 			"------------------------------------------------------------------------\n"\
 			"\n"
 			"--- C-PCI parameters\n";
-	if( busIf && busIf->hasPciBusPath() ){
+	if( busIf && busIf->hasPciBusPath() && !_prop->usePciBusNoAndDevNo() ){
 
 		// PCI_BUS_PATH
 		Q3MemArray<uchar> busPath;
 		busIf->pciBusPath( -1, &busPath );
 
-		//parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath, helpTxt ) );
-		parentDesc->addChild( dFact.create("PCI_BUS_NUMBER", _prop->pciBusNo, helpTxt ) );
+		parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath, helpTxt ) );
 
 		// PCI device number (=PCI_DEVICE_ID) of PCIe endpoints is always 0
 		if( busIf->getIsPciE() ){
@@ -598,19 +605,17 @@ ModBbisD203Family::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 		}
 		else{
 			// PCI_BUS_SLOT
-			//parentDesc->addChild( dFact.create("PCI_BUS_SLOT", _prop->slotNo ));
-			parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", _prop->pciDevNo ));
+			parentDesc->addChild( dFact.create("PCI_BUS_SLOT", _prop->slotNo ));
 		}
 
 		// PCI_DEVICE_ID (name is missleading...)
 		//
 		// This forces the D201 driver to ignore OSS_PciSlotToPciDevice...
-		//busIf->pciBusPath( _prop->slotNo, &busPath );
-		//if( busPath.size() > 0 ){
-		//	int ix = busPath.size() -1;
-		//	parentDesc->addChild( dFact.create("PCI_DEVICE_ID", busPath[ix] ));
-		//}
-		parentDesc->addChild( dFact.create("PCI_DEVICE_ID", _prop->pciDevNo ));
+		busIf->pciBusPath( _prop->slotNo, &busPath );
+		if( busPath.size() > 0 ){
+			int ix = busPath.size() -1;
+			parentDesc->addChild( dFact.create("PCI_DEVICE_ID", busPath[ix] ));
+		}
 	}
 	else {
 		// PCI_BUS_NUMBER
