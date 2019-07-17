@@ -275,7 +275,7 @@ ModCpuF23P::ModCpuF23P( bool withSubDevs ):
 
 		// _minSlot must be !=-1 so that hasPciBusPath() reports true
 	    busIf1 = new PciBusInterface(
-	        CpciSer, i, i, 0, &cpciBusPath);
+	        CpciSer, -1, i, 0, &cpciBusPath);
 		busIf1->setInstName( QString("CompactPCI Serial slot %1").arg(i) );
 		addChild( busIf1 );
 	}
@@ -338,7 +338,7 @@ ModCpuF26L::ModCpuF26L( bool withSubDevs ):
 
 		// _minSlot must be !=-1 so that hasPciBusPath() reports true
 	    busIf1 = new PciBusInterface(
-	        CpciSer, i, i, 0, &cpciBusPath);
+	        CpciSer, -1, i, 0, &cpciBusPath);
 		busIf1->setInstName( QString("CompactPCI Serial slot %1").arg(i) );
 		addChild( busIf1 );
 	}

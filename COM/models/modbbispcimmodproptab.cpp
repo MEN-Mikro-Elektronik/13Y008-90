@@ -155,20 +155,19 @@ ModBbisPciMmodPropTab::ModBbisPciMmodPropTab(
 	gl->addWidget( pciSlotCbox, row, 0, Qt::AlignRight );
 	row++;
 
-
-	pciBusSlotParameter = new QCheckBox(QString("Use BUS and DEVICE number "
-			"instead of BUS_SLOT?"), this);
+	pciBusSlotParameter = new QCheckBox(QString("Use PCI Bus and Device Number instead "
+			"of Slot\nspecific PCI parameters (PCI_BUS_PATH, PCI_BUS_SLOT)"), this);
 
 	gl->addWidget( pciBusSlotParameter, row, 0, Qt::AlignLeft );
 	row++;
 
 	// Bus interface bus path is unknown, ask for bus/device number
 	pciBusNoInfo0 = new QLabel( QString(""), this );
-	pciBusNoInfo0->setText( QString("Enter PCI settings: <font color=\"red\">use PCI bus nr. from 'lspci' command!</font>") );
+	pciBusNoInfo0->setText( QString("Determine the actual parameters of the PCI device\n(e.g. by using lspci command under Linux) and enter it.") );
 	gl->addWidget( pciBusNoInfo0, row, 0, Qt::AlignLeft );
 	row++;
 	pciBusNoInfo1 = new QLabel( QString(""), this );
-	pciBusNoInfo1->setText( QString("No validity check will be done") );
+	pciBusNoInfo1->setText( QString("<font color=\"red\">No validity check will be done</font>") );
 	gl->addWidget( pciBusNoInfo1, row, 0, Qt::AlignLeft );
 	row++;
 
