@@ -102,6 +102,20 @@ ModSerialPropTab::enablePciFields(int state)
 	if ( hasPciBusPath ) {
 		if (state == QCheckBox::On) {
 			wDebug(("state == QCheckBox::On"));
+			if ( isBbisPciGenDev ) {
+				ModBbisPciGenProperties *_prop;
+				WIZ_DYNAMIC_CAST( getMainDlg()->getProperties(), _prop,
+								  ModBbisPciGenProperties *);
+				_prop->pciBusNoIsDef = true;
+				_prop->pciDevNoIsDef = true;
+			}
+			else {
+				ModBbisPciMmodProperties *_prop;
+				WIZ_DYNAMIC_CAST( getMainDlg()->getProperties(), _prop,
+								  ModBbisPciMmodProperties *);
+				_prop->pciBusNoIsDef = true;
+				_prop->pciDevNoIsDef = true;
+			}
 			pciBusNoInfo0->setHidden(false);
 			pciBusNoInfo1->setHidden(false);
 			pciBusNoLabel->setHidden(false);
@@ -111,6 +125,20 @@ ModSerialPropTab::enablePciFields(int state)
 			}
 		else {
 			wDebug(("state == QCheckBox::Off"));
+			if ( isBbisPciGenDev ) {
+				ModBbisPciGenProperties *_prop;
+				WIZ_DYNAMIC_CAST( getMainDlg()->getProperties(), _prop,
+								  ModBbisPciGenProperties *);
+				_prop->pciBusNoIsDef = false;
+				_prop->pciDevNoIsDef = false;
+			}
+			else {
+				ModBbisPciMmodProperties *_prop;
+				WIZ_DYNAMIC_CAST( getMainDlg()->getProperties(), _prop,
+								  ModBbisPciMmodProperties *);
+				_prop->pciBusNoIsDef = false;
+				_prop->pciDevNoIsDef = false;
+			}
 			pciBusNoInfo0->setHidden(true);
 			pciBusNoInfo1->setHidden(true);
 			pciBusNoLabel->setHidden(true);
@@ -134,21 +162,31 @@ ModSerialPropTab::updateProperties()
 		ModBbisPciGenProperties *_prop;
 		WIZ_DYNAMIC_CAST( getMainDlg()->getProperties(), _prop,
 						  ModBbisPciGenProperties *);
-		//_prop->slotNo = pciSlotLabel->currentText().toInt();
 		_prop->pciBusNo = pciBusNoSpBox->value();
-		_prop->pciBusNoIsDef = true;
-		_prop->pciDevNoIsDef = true;
 		_prop->pciDevNo = 0;
+		if( hasPciBusSlotParameter && !pciBusSlotParameter->isChecked() ){
+			_prop->pciBusNoIsDef = false;
+			_prop->pciDevNoIsDef = false;
+		}
+		else {
+			_prop->pciBusNoIsDef = true;
+			_prop->pciDevNoIsDef = true;
+		}
 	}
 	else {
 		ModBbisPciMmodProperties *_prop;
 		WIZ_DYNAMIC_CAST( getMainDlg()->getProperties(), _prop,
 						  ModBbisPciMmodProperties *);
-		//_prop->slotNo = pciSlotLabel->currentText().toInt();
 		_prop->pciBusNo = pciBusNoSpBox->value();
-		_prop->pciBusNoIsDef = true;
-		_prop->pciDevNoIsDef = true;
 		_prop->pciDevNo = 0;
+		if( hasPciBusSlotParameter && !pciBusSlotParameter->isChecked() ){
+			_prop->pciBusNoIsDef = false;
+			_prop->pciDevNoIsDef = false;
+		}
+		else {
+			_prop->pciBusNoIsDef = true;
+			_prop->pciDevNoIsDef = true;
+		}
 	}
 
 	pciDevNoLabel->setEnabled(false);
@@ -160,6 +198,7 @@ ModSerialPropTab::setProperties()
 {
 	wDebug(("ModSerialPropTab::setProperties"));
 	PciBusInterface *busIf;
+	bool useBusPath=true;
 
 	WIZ_DYNAMIC_CAST( (getMainDlg()->getDevice()->getParent()), busIf,
 						PciBusInterface * );
@@ -171,7 +210,7 @@ ModSerialPropTab::setProperties()
 		pciSlotLabel->setText(QString("Slot: %1").arg(_prop->slotNo ));
 		pciBusNoSpBox->setValue( _prop->pciBusNo );
 		_prop->pciDevNo = 0;
-
+		useBusPath = (!_prop->usePciBusNoAndDevNo());
 	}
 	else {
 		ModBbisPciMmodProperties *_prop;
@@ -180,18 +219,11 @@ ModSerialPropTab::setProperties()
 		pciSlotLabel->setText(QString("Slot: %1").arg(_prop->slotNo ));
 		pciBusNoSpBox->setValue( _prop->pciBusNo );
 		_prop->pciDevNo = 0;
+		useBusPath = (!_prop->usePciBusNoAndDevNo());
 	}
 
-	//pciBusSlotParameter->setChecked( !busIf->hasPciBusPath() );
-	if( (!hasPciBusSlotParameter && hasPciBusPath) || (pciBusSlotParameter->isChecked()) ){
-		pciBusNoInfo0->setHidden(false);
-		pciBusNoInfo1->setHidden(false);
-		pciBusNoLabel->setHidden(false);
-		pciBusNoSpBox->setHidden(false);
-		pciDevNoLabel->setHidden(false);
-		pciDevNoSpBox->setHidden(false);
-	}
-	else {
+	if( hasPciBusSlotParameter && useBusPath ) {
+		pciBusSlotParameter->setChecked(false);
 		pciBusNoInfo0->setHidden(true);
 		pciBusNoInfo1->setHidden(true);
 		pciBusNoLabel->setHidden(true);
@@ -199,5 +231,13 @@ ModSerialPropTab::setProperties()
 		pciDevNoLabel->setHidden(true);
 		pciDevNoSpBox->setHidden(true);
 	}
+	else {
+		pciBusSlotParameter->setChecked(true);
+		pciBusNoInfo0->setHidden(false);
+		pciBusNoInfo1->setHidden(false);
+		pciBusNoLabel->setHidden(false);
+		pciBusNoSpBox->setHidden(false);
+		pciDevNoLabel->setHidden(false);
+		pciDevNoSpBox->setHidden(false);
+	}
 }
-
