@@ -597,6 +597,7 @@ compiler_moc_header_clean:
 		../../COM/swmodule.h \
 		../../COM/typestr.h \
 		../../COM/descriptor.h \
+		../../COM/models/modbbispcigen.h \
 		../../COM/models/modserialproptab.h
 	/usr/local/Trolltech/Qt-4.6.0/bin/moc $(DEFINES) $(INCPATH) ../../COM/models/modserialproptab.h -o .moc/moc_modserialproptab.cpp
 
@@ -1285,6 +1286,7 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/propertiesdlg.h \
 		../../COM/models/modbbissmbpcigen.h \
 		../../COM/models/modbbispcimmod.h \
+		../../COM/models/modserialproptab.h \
 		../../COM/configuration.h \
 		../../COM/namemng.h \
 		../../COM/wizexcept.h \
@@ -1396,6 +1398,7 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/models/modbbisd203fam.h \
 		../../COM/models/modbbisd203famproptab.h \
 		../../COM/models/modserialproptab.h \
+		../../COM/models/modbbispcigen.h \
 		../../COM/wizdebug.h \
 		../../COM/configuration.h \
 		../../COM/namemng.h \
@@ -1955,6 +1958,7 @@ compiler_clean: compiler_moc_header_clean
 		../../COM/swmodule.h \
 		../../COM/typestr.h \
 		../../COM/descriptor.h \
+		../../COM/models/modbbispcigen.h \
 		../../COM/wizdebug.h \
 		../../COM/wizexcept.h \
 		../../COM/resourcemng.h
