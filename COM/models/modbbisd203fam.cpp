@@ -585,18 +585,13 @@ ModBbisD203Family::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 	QString helpTxt;
 	wDebug(("ModBbisD203Family::createSpecialDesc"));
 
-	helpTxt="------------------------------------------------------------------------\n"\
-			"       device parameters\n"												\
-			"------------------------------------------------------------------------\n"\
-			"\n"
-			"--- C-PCI parameters\n";
 	if( busIf && busIf->hasPciBusPath() && !_prop->usePciBusNoAndDevNo() ){
 
 		// PCI_BUS_PATH
 		Q3MemArray<uchar> busPath;
 		busIf->pciBusPath( -1, &busPath );
 
-		parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath, helpTxt ) );
+		parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath ) );
 
 		// PCI device number (=PCI_DEVICE_ID) of PCIe endpoints is always 0
 		if( busIf->getIsPciE() ){
@@ -619,7 +614,7 @@ ModBbisD203Family::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 	}
 	else {
 		// PCI_BUS_NUMBER
-		parentDesc->addChild( dFact.create("PCI_BUS_NUMBER", _prop->pciBusNo, helpTxt));
+		parentDesc->addChild( dFact.create("PCI_BUS_NUMBER", _prop->pciBusNo));
 
 		// PCI_DEVICE_ID (name is missleading...)
 		parentDesc->addChild( dFact.create("PCI_DEVICE_ID", _prop->pciDevNo));
@@ -630,7 +625,12 @@ ModBbisD203Family::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 	}
 	        	
 	// PXI Trigger Settings
-	helpTxt="--- Global Trigger Settings (see HW manual)\n";
+
+	helpTxt="------------------------------------------------------------------------\n"\
+			"       device parameters\n"												\
+			"------------------------------------------------------------------------\n"\
+			"\n"\
+			"--- Global Trigger Settings (see HW manual)\n";
 	bool dEntActive =  (_prop->pxiTrigSrc | _prop->pxiTrigDst ) ? true : false;
 
 	parentDesc->addChild( dFact.create("PXI_TRIG_SRC", _prop->pxiTrigSrc, helpTxt, dEntActive));

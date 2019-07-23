@@ -172,7 +172,7 @@ ModBbisPciGenPropTab::ModBbisPciGenPropTab(
 	gl->addWidget( pciBusNoInfo0, row, 0, Qt::AlignLeft );
 	row++;
 	pciBusNoInfo1 = new QLabel( QString(""), this );
-	pciBusNoInfo1->setText( QString("<font color=\"red\">No validity check will be done</font>") );
+	pciBusNoInfo1->setText( QString("<font color=\"red\">No validity check will be done!</font>") );
 	gl->addWidget( pciBusNoInfo1, row, 0, Qt::AlignLeft );
 	row++;
 
