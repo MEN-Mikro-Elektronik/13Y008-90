@@ -238,5 +238,32 @@ public:
 	SwModule *findMake( int type, const QString &makefilePath );
 };
 
+class DepracatedComponent {
+public:
+
+	//! type of Depracated Component End of support/End of life
+	enum DepracatedType { EOS=0x1, EOL=0x2 };
+
+	DepracatedComponent( int type, const QString &component, const QString &description ) {
+		_type = type; _component=component; _description = description; }
+	//! get type of module
+	int componentType() const { return _type; }
+	//! get the module's name
+	const QString &componentName() const { return _component; } ;
+	//! get the module's description
+	const QString &description() const { return _description; }
+private:
+	QString _component;		//!< name of _component / mdiswizard name of component
+	QString _description;	//!< description of component / full Component name
+	int _type;				//!< type of component EOL / EOS
+};
+
+class ComponentEosEolList : public Q3PtrList<DepracatedComponent> {
+public:
+	ComponentEosEolList();
+	bool add(DepracatedComponent *component);
+	DepracatedComponent *find( int type, const QString &name );
+};
+
 #endif
 

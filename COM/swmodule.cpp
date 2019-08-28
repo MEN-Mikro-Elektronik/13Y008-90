@@ -294,3 +294,29 @@ SwModuleList::findMake( int type, const QString &makefilePath )
 
 	return 0;
 }
+
+//! construct an empty ComponentEosEolList
+ComponentEosEolList::ComponentEosEolList()
+{
+	setAutoDelete(true);
+};
+
+//! add another component to the list
+bool ComponentEosEolList::add(DepracatedComponent *component)
+{
+	append( component );
+	return true;
+};
+
+//! find component in the list
+DepracatedComponent*
+ComponentEosEolList::find( int type, const QString &name )
+{
+	DepracatedComponent *comp;
+	for( comp=first(); comp; comp=next()){
+		if( comp->componentName() == name &&
+			comp->componentType() == type)
+			return comp;
+	}
+	return 0;
+}
