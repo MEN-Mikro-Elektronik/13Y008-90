@@ -2735,7 +2735,7 @@ OsLinuxNewProjectWizard::OsLinuxNewProjectWizard(
 
 	// Add page to select CPU board:
 	cpuWdg = new AddComponentWidget(this, 0,
-		"Please select your target CPU board from the list below:");
+		"Please select your target CPU board from the list below:", true);
 
 	addPage( cpuWdg, "Select a CPU board" );
 	setHelpEnabled( cpuWdg, false );

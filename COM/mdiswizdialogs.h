@@ -89,7 +89,8 @@ public:
 	//! creates the add component dialog
 	AddComponentWidget(QWidget *parent,
 					   const char *name,
-					   const QString &text) : QWidget( parent, name )
+					   const QString &text,
+					   const bool addEOSNote=false) : QWidget( parent, name )
 	{
         Q3VBoxLayout *vb = new Q3VBoxLayout(this,10);
 
@@ -105,6 +106,14 @@ public:
 		listBox->setAllColumnsShowFocus( true );
 
 		vb->addWidget( listBox );
+		if ( addEOSNote )
+		{
+			QString depracatedComponentTextLine0("<font color=\"red\">EOS (End of Support):</font>");
+			QString depracatedComponentTextLine1("<font color=\"red\">No longer maintained. See supported_components.md for details.</font>");
+			QLabel *label = new QLabel();
+			label->setText(depracatedComponentTextLine0 + "<br>" + depracatedComponentTextLine1);
+			vb->addWidget(label);
+		}
 	}
 
 	//! add an entry to the list of selectable components
