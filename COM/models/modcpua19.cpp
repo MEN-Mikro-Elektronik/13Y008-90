@@ -213,4 +213,90 @@ ModCpuA20::enumSwModules()
 	return lstSwModules;
 }
 
+// -----------------------------------------------------------------
+// CPU A25
+
+//! Creates an A25 CPU device
+/*!
+  including the bus interfaces and, if \a withSubDevs is \c true, the
+  BBIS devices
+*/
+ModCpuA25::ModCpuA25( bool withSubDevs ) :
+	CpuDeviceSmb( QString("A25"), QString("A25"), false, true, 1 )
+{
+	BusInterface *busIfObPCI1=0;
+	BusInterface *vmeBusIf=0;
+    ModBbisSmbPciGen* smbBbis = 0;
+	UTIL_UNREF_PARAM(withSubDevs);
+
+    setDescription( "VME Xeon D-1500 server CPU with one PMC/XMC slot" );
+
+	lstCpuCores << Pentium << Pentium2 << Pentium3 << Pentium4;
+
+	// create vme bus interface
+    vmeBusIf = new ModVmeIfA17();					// VME interface
+	vmeBusIf->setInstName( QString("VME"));
+	vmeBusIf->setEndianSwapping( true );
+	addChild( vmeBusIf );
+
+
+	// create mezzanine slot interface
+	{
+		// PMC slot 0/1
+		Q3MemArray<uchar> pciBusPath(2);
+	    pciBusPath[0] = 0x1c; // 0x1c.0 = 0b 0001 1100
+		pciBusPath[1] = 0x00;
+
+		Q3MemArray<uchar> pciBusTbl(2);
+		pciBusTbl[0] = 0x07;
+		pciBusTbl[1] = 0x08;
+
+		busIfObPCI1 = new PciBusInterface( Pmc, 0, 1, &pciBusPath, &pciBusTbl, true );
+		busIfObPCI1->setInstName(QString("onboard PMC"));
+		addChild(busIfObPCI1);
+
+		// XMC
+		// undefined paths because PCI-X lines/bridges can be configured by SW
+		// and can shift whole bus structure
+		busIfObPCI1 = new PciBusInterface( Xmc, -1, -1, 0, 0, true );
+		busIfObPCI1->setInstName(QString("onboard XMC"));
+		addChild(busIfObPCI1);
+	}
+
+	// SMBus
+	{
+		Q3MemArray<uchar> smbBusPath(1);
+	    smbBusPath[0] = 0x7f;
+
+	    // cannot store the pci bus path in the busIf because one busIf can have several
+	    // smb controller children
+        this->smbusIf = new PciBusInterface( LocalBus, -1, -1, 0, 0, false );
+		this->smbusIf->setInstName( QString("Onboard SMB"));
+		addChild( this->smbusIf );
+
+        smbBbis = new ModBbisSmbPciGen("ICH");
+        // set pci bus path
+        smbBbis->setPciBusPath(smbBusPath);
+
+        this->smbBbisList.push_back(smbBbis);
+
+	}
+
+}
+
+SwModuleList *
+ModCpuA25::enumSwModules()
+{
+	CpuDevice::enumSwModules();
+	SwModuleList *addLst = enumSwModulesForExternalPackage( "TSI148" );
+
+	if( lstSwModules == 0 && addLst )
+		lstSwModules = new SwModuleList;
+
+	if( lstSwModules && addLst )
+		lstSwModules->add( addLst );
+
+	return lstSwModules;
+}
+
 

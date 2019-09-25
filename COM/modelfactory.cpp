@@ -324,6 +324,7 @@ CpuModelFactory::CpuModelFactory() : ModelFactory()
     append( new ModCpuA17( false ));
     append( new ModCpuA19( false ));
     append( new ModCpuA20( false ));
+    append( new ModCpuA25( false ));
     append( new ModCpuA21( ModCpuA21::A21Msi, ModCpuA21::WithMmods, false ));
     append( new ModCpuA21( ModCpuA21::A21, ModCpuA21::WithMmods, false ));
     append( new ModCpuA21( ModCpuA21::A21, ModCpuA21::WithPmcs, false ));

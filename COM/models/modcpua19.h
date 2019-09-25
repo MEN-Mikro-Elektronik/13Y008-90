@@ -61,4 +61,20 @@ public:
 	Arch getArch() { return X86; }
 };
 
+// -----------------------------------------------------------------
+//! MEN CPU A25
+
+class ModCpuA25 : public CpuDeviceSmb
+{
+public:
+	ModCpuA25( bool withSubDevs );
+
+	// create another instance
+	virtual Device *create( bool withSubDevs=true ){
+			return new ModCpuA25(withSubDevs);
+	};
+	virtual SwModuleList *enumSwModules();
+	Arch getArch() { return X86; }
+};
+
 #endif /*MODCPUA19_H_*/
