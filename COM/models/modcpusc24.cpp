@@ -260,6 +260,71 @@ ModBbisBx51x::ModBbisBx51x(bool withSubDevs) : ModBbisChamIsa()
 }
 
 // -----------------------------------------------------------------
+// CPU DC19/DC20 - based on Bx51x,
+
+//! Creates an SC31 based Box computer device
+/*!
+  including the bus interfaces and, if \a withSubDevs is \c true, the
+  BBIS devices
+*/
+ModCpuDCxx::ModCpuDCxx(bool withSubDevs ):
+	CpuDeviceSmb( QString("DC19/DC20"), QString("SC31"), false, true, 1 )
+{
+	BusInterface *busIf2;
+	ModBbisSmbPciGen* smbBbis;
+
+	lstCpuCores << Pentium4 << Athlon;
+
+	setDescription("Display Computer with CPU board SC31");
+
+	// Interface for SC31 FPGA @ LPC bus
+	busIf2 = new BusInterface( LocalBus, false );
+	addChild( busIf2 );
+
+	if( withSubDevs ){
+		ModBbisDCxx *isaBbis = new ModBbisDCxx( true );   // local BBIS dev
+		busIf2->addChild( isaBbis );
+	}
+
+    // SMBus interface
+	{
+		Q3MemArray<uchar> smbBusPath(1);
+	    smbBusPath[0] = 0x1f;
+
+	    // cannot store the pci bus path in the busIf because one busIf can have several
+	    // smb controller children
+	    this->smbusIf = new PciBusInterface( LocalBus, -1, -1, 0, 0, false );
+	    this->smbusIf->setInstName( QString("Onboard SMB"));
+	    addChild( this->smbusIf );
+
+	    smbBbis = new ModBbisSmbPciGen("FCH");
+	    // set pci bus path
+	    smbBbis->setPciBusPath(smbBusPath);
+	    this->smbBbisList.push_back(smbBbis);
+	}
+}
+
+Device *ModCpuDCxx::create(bool withSubDevs)
+{
+	return new ModCpuDCxx(withSubDevs);
+}
+
+// -----------------------------------------------------------------
+// BBIS DC19/DC20
+
+ModBbisDCxx::ModBbisDCxx(bool withSubDevs) : ModBbisChamIsa()
+{
+	UTIL_UNREF_PARAM(withSubDevs);
+
+	setHwName("CHAMELEON_ISA");
+	// setIsaAddress( 0xe000, true );
+	// ts: changed to memmapped, only needed for Linux, VxWorks
+	setIsaAddress( 0xf000e000, false );
+	setInstName( "SC31_FPGA" );
+	setInstNameChangeAllowed( false );
+}
+
+// -----------------------------------------------------------------
 // CPU Bx70x
 
 //! Creates an SC25 based Box computer device

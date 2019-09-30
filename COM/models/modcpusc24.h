@@ -100,6 +100,27 @@ class ModBbisBx51x : public ModBbisChamIsa
 };
 
 // -----------------------------------------------------------------
+//! MEN CPU DC19/DC20
+
+class ModCpuDCxx : public CpuDeviceSmb
+{
+public:
+	ModCpuDCxx(bool withSubDevs=true );
+	// create another instance
+	virtual Device *create(bool withSubDevs=true);
+	Arch getArch() { return X86; }
+};
+
+//! BBIS class for DC19/DC20 onboard Chameleon FPGA
+class ModBbisDCxx : public ModBbisChamIsa
+{
+ public:
+	ModBbisDCxx(bool withSubDevs=true);
+	virtual Device *create(bool withSubDevs=true) {
+		return new ModBbisDCxx(withSubDevs);
+	}
+};
+// -----------------------------------------------------------------
 //! MEN CPU Bx70x
 
 class ModCpuBx70x : public CpuDeviceSmb
