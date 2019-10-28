@@ -327,6 +327,8 @@ Configuration::Configuration() :
 	lstDepracatedModules.add( dCmp );
 	dCmp = new DepracatedComponent( depType,"16Z050_BIO_IO","16Z050_BIOC");
 	lstDepracatedModules.add( dCmp );
+	dCmp = new DepracatedComponent( depType,"16Z072_OWB","16Z072_OWB");
+	lstDepracatedModules.add( dCmp );
 	dCmp = new DepracatedComponent( depType,"16Z061_PWM","16Z061_PWM");
 	lstDepracatedModules.add( dCmp );
 	dCmp = new DepracatedComponent( depType,"16Z075_SPEED","16Z075_SPEED");
@@ -365,13 +367,7 @@ Configuration::Configuration() :
 	lstDepracatedModules.add( dCmp );
 	dCmp = new DepracatedComponent( depType,"M69","04M069N");
 	lstDepracatedModules.add( dCmp );
-	dCmp = new DepracatedComponent( depType,"M72","04M072");
-	lstDepracatedModules.add( dCmp );
-	dCmp = new DepracatedComponent( depType,"M72_PRE","04M072");
-	lstDepracatedModules.add( dCmp );
 	dCmp = new DepracatedComponent( depType,"M75","04M075");
-	lstDepracatedModules.add( dCmp );
-	dCmp = new DepracatedComponent( depType,"M77","04M077");
 	lstDepracatedModules.add( dCmp );
 	depType = DepracatedComponent::EOL;
 	dCmp = new DepracatedComponent( depType,"A11","01A011");
@@ -447,8 +443,6 @@ Configuration::Configuration() :
 	dCmp = new DepracatedComponent( depType,"16Z047_WDOG","16Z047_WDOG");
 	lstDepracatedModules.add( dCmp );
 	dCmp = new DepracatedComponent( depType,"16Z069_RST_WDG","16Z069_RST");
-	lstDepracatedModules.add( dCmp );
-	dCmp = new DepracatedComponent( depType,"M35","04M035");
 	lstDepracatedModules.add( dCmp );
 	dCmp = new DepracatedComponent( depType,"M74","04M074");
 	lstDepracatedModules.add( dCmp );
