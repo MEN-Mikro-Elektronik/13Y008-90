@@ -341,7 +341,7 @@ extern QApplication *G_qApp;  //!< main application
   os  = OS name
   x.y = Major/Minor version number
 */
-static const QString mdiswizLinuxVersion("linux-14.0");
+static const QString mdiswizLinuxVersion("linux-14.1");
 static const QString sysDescPlainName("system");
 static const QString sysDescName( sysDescPlainName + ".dsc");
 static const QString makeName("Makefile");
