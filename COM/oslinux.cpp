@@ -1330,10 +1330,17 @@ OsLinux::startup( int argc, char **argv )
 QString
 OsLinux::driverName( QString plainName, Device *dev )
 {
-	QString name = "men_";
+	QString name;
+	if ( !plainName.startsWith("men_", Qt::CaseInsensitive) ) {
+		name = "men_";
+	}
+	else {
+		return plainName.lower();
+	}
 
 	switch( dev->type() ){
 	case Device::Mdis:
+	case Device::MdisCham:
 		MdisDevice *mdev;
 		WIZ_DYNAMIC_CAST( dev, mdev, MdisDevice *);
 
