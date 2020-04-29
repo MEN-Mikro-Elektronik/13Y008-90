@@ -108,8 +108,8 @@ public:
 		vb->addWidget( listBox );
 		if ( addEOSNote )
 		{
-			QString depracatedComponentTextLine0("<font color=\"red\">EOS (End of Support):</font>");
-			QString depracatedComponentTextLine1("<font color=\"red\">No longer maintained. See supported_components.md for details.</font>");
+			QString depracatedComponentTextLine0("<font color=\"black\">Note column tags:</font>");
+			QString depracatedComponentTextLine1("<font color=\"red\">EOS: No longer maintained (see supported_components.md)</font>");
 			QLabel *label = new QLabel();
 			label->setText(depracatedComponentTextLine0 + "<br>" + depracatedComponentTextLine1);
 			vb->addWidget(label);
@@ -171,8 +171,8 @@ public:
 		Q3HBoxLayout *hb = new Q3HBoxLayout();
 		vb->addLayout( hb );
 
-		QString depracatedComponentTextLine0("<font color=\"red\">EOS (End of Support):</font>");
-		QString depracatedComponentTextLine1("<font color=\"red\">No longer maintained. See supported_components.md for details.</font>");
+		QString depracatedComponentTextLine0("<font color=\"black\">Note column tags:</font>");
+		QString depracatedComponentTextLine1("<font color=\"red\">EOS: No longer maintained (see supported_components.md)</font>");
 		QLabel *label = new QLabel();
 		label->setText(depracatedComponentTextLine0 + "<br>" + depracatedComponentTextLine1);
 		hb->addWidget(label);
