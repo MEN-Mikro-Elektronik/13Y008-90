@@ -254,7 +254,7 @@ extern const QString	G_progName;     //!< main application name
   x.yy = Major/Minor version number
   zzz  = Reflects changes in the CPU/BBIS model support (it is not reset on x.yy change!)
 */
-extern const QString mdiswizVersion = "3.01.031";
+extern const QString mdiswizVersion = "3.02.031";
 
 // -----------------------------------------------------------------
 //! constructs the root ComponentViewItem (QListViewItem)
