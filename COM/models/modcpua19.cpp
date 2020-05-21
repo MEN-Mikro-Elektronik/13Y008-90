@@ -288,13 +288,17 @@ SwModuleList *
 ModCpuA25::enumSwModules()
 {
 	CpuDevice::enumSwModules();
-	SwModuleList *addLst = enumSwModulesForExternalPackage( "TSI148" );
+	SwModuleList *addLst = enumSwModulesForExternalPackage( "PLDZ002" );
+	SwModuleList *addLstCham = enumSwModulesForExternalPackage( "CHAMELEON" );
 
-	if( lstSwModules == 0 && addLst )
+	if( lstSwModules == 0 && ( addLst || addLstCham ) )
 		lstSwModules = new SwModuleList;
 
 	if( lstSwModules && addLst )
 		lstSwModules->add( addLst );
+
+	if( lstSwModules && addLstCham )
+		lstSwModules->add( addLstCham );
 
 	return lstSwModules;
 }
