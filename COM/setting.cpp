@@ -248,7 +248,8 @@ MultipleChoiseSetting::wizardPage( Q3Wizard *parent, QString *pageTitleP )
 
 	frm = new SettingFrame(parent);
 	Q3VBoxLayout *vb = new Q3VBoxLayout(frm);
-
+	frm->setMinimumWidth(520);
+	frm->setMinimumHeight(270);
 	QLabel *info = new QLabel( infoText(), frm );
 	info->setWordWrap( true );
 	vb->addStretch(1);
@@ -256,11 +257,20 @@ MultipleChoiseSetting::wizardPage( Q3Wizard *parent, QString *pageTitleP )
 
     buttonGroup = new Q3ButtonGroup( 1, Qt::Horizontal,
 									QString::null, frm );
+
 	vb->addStretch(1);
 	vb->addWidget( buttonGroup );
 	vb->addStretch(1);
 
 	makeButtonGroup();
+	if ( !QString::compare(this->key(),"WIZ_CDK", Qt::CaseInsensitive) ) {
+		QString depracatedComponentTextLine0("<font color=\"black\">Note:</font>");
+		QString depracatedComponentTextLine1("<font color=\"red\">EOL: No longer maintained (see supported_components.md)</font>");
+		QLabel *label = new QLabel();
+		label->setText(depracatedComponentTextLine0 + "<br>" + depracatedComponentTextLine1);
+		vb->addWidget(label);
+		vb->addStretch(1);
+	}
 
 	connect( buttonGroup, SIGNAL(clicked(int)),
 			 this, SLOT(slotCboxChange(int)));

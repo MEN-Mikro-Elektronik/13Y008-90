@@ -565,7 +565,7 @@ public:
 			"The development host is the same as your target system. Uses "
 			"the GNU compiler tool chain." <<
 
-			"Cross compilation with SYSGO's embedded Linux distribution" <<
+			"Cross compilation with SYSGO's embedded Linux distribution (EOL)" <<
 
 			"Other environment, e.g. ELDK";
 
