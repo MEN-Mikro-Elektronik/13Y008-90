@@ -366,6 +366,7 @@ CpuModelFactory::CpuModelFactory() : ModelFactory()
     append( new ModCpuF22P(false));
     append( new ModCpuF23P(false));
     append( new ModCpuF26L(false));
+    append( new ModCpuF27P(false));
     append( new ModCpuF50P(false));
     append( new ModCpuF75P(false));
     append( new ModCpuG20(false));
