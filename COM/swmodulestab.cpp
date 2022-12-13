@@ -150,7 +150,7 @@ CfgSwModuleTab::addItems( Q3CheckListItem *controller,
 
 		if( mod->modType() == modType ){
 			item = new CfgSwModuleItem( controller, *mod );
-			item->setOn( mod->isEnabled() );				
+			item->setOn( mod->isEnabled() && !mod->isInternal() );
 		}
 	}
 }
@@ -205,6 +205,9 @@ CfgSwModuleTab::slotApply()
 													item->swMod.modName());
 				WIZ_ASSERT( mod );
 				mod->setEnabled( item->isOn() );
+				// check if internal module for build is selected
+				if( mod->isInternal() && item->isOn())
+					mod->setInternal(false);
 			}
 		}
 	}

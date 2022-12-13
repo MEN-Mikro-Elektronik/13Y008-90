@@ -110,6 +110,7 @@
 #include "descriptor.h"
 #include "modbbispcimmod.h"
 #include "modbbispcimmodproptab.h"
+#include "modmdischamproptab.h"
 #include "util.h"
 
 class ModMdisCham;

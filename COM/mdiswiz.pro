@@ -108,7 +108,7 @@ HEADERS += cfgmakefile.h \
            models/modmdisgeneric.h \
            models/modmdischam.h \
            models/modmdischamproptab.h \
-
+           models/modserialproptab.h \
 #           helpviewer\helpwindow.h \
 
 
@@ -199,3 +199,4 @@ SOURCES += ../COM/cfgmakefile.cpp \
            models/modmdisgeneric.cpp \
            models/modmdischam.cpp \
            models/modmdischamproptab.cpp \
+           models/modserialproptab.cpp \

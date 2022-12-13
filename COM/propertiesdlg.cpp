@@ -485,6 +485,7 @@ DevSmbTab::DevSmbTab(
 void 
 DevSmbTab::enableSpinBox(int state)
 {
+	wDebug(("DevSmbTab::enableSpinBox"));
 	if (state == QCheckBox::On) {
 		numZ001Label->setEnabled(true);
 		numZ001SmbSpinBox->setEnabled(true);
