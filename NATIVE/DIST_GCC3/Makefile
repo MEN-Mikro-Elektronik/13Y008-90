@@ -2006,4 +2006,4 @@ compiler_clean: compiler_moc_header_clean
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/moc_modserialproptab.o .moc/moc_modserialproptab.cpp
 
 release: all
-	$(STRIP) $(INSTALL_ROOT)/home/jorge/Work/MDIS/13Y008-90/NATIVE/DIST_GCC3/mdiswiz
+	$(STRIP) mdiswiz
