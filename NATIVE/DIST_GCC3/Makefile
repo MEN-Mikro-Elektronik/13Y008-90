@@ -312,7 +312,7 @@ first: all
 
 ####### Build rules
 
-all: prepare Makefile $(TARGET)
+all: prepare $(TARGET)
 
 prepare:
 	@$(CHK_DIR_EXISTS) $(OBJECTS_DIR) || $(MKDIR) $(OBJECTS_DIR)
@@ -321,60 +321,10 @@ prepare:
 $(TARGET):  $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
-Makefile: mdiswiz.pro  $(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/linux-g++/qmake.conf $(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/common/g++.conf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/common/unix.conf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/common/linux.conf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/qt_functions.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/qt_config.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/exclusive_builds.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/default_pre.prf \
-		../../COM/mdiswiz.pro \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/release.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/default_post.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/static.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/warn_on.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/qt.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/unix/thread.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/moc.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/resources.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/uic.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/yacc.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/lex.prf \
-		$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/include_source_dir.prf
-	$(QMAKE) -unix -o Makefile mdiswiz.pro
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/common/g++.conf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/common/unix.conf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/common/linux.conf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/qt_functions.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/qt_config.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/exclusive_builds.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/default_pre.prf:
-../../COM/mdiswiz.pro:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/release.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/default_post.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/static.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/warn_on.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/qt.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/unix/thread.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/moc.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/resources.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/uic.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/yacc.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/lex.prf:
-$(QTSYSROOT)/usr/local/Trolltech-away/Qt-4.6.0/mkspecs/features/include_source_dir.prf:
-qmake:  FORCE
-	@$(QMAKE) -unix -o Makefile mdiswiz.pro
-
-dist: 
-	@$(CHK_DIR_EXISTS) .obj/mdiswiz1.0.0 || $(MKDIR) .obj/mdiswiz1.0.0 
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .obj/mdiswiz1.0.0/ && $(COPY_FILE) --parents ../../COM/cfgmakefile.h ../../COM/configuration.h ../../COM/descfile.h ../../COM/descriptor.h ../../COM/devgenericprop.h ../../COM/dipbutton.h ../../COM/dipswitch.h ../../COM/tristatebutton.h ../../COM/tristateswitch.h ../../COM/execprogram.h ../../COM/hexeditwidget.h ../../COM/hexspinbox.h ../../COM/hwcomponent.h ../../COM/install.h ../../COM/instnamewidget.h ../../COM/mdiswiz.h ../../COM/mdiswizdialogs.h ../../COM/modelfactory.h ../../COM/namemng.h ../../COM/osfactory.h ../../COM/oslinux.h ../../COM/osvxworks.h ../../COM/osos9.h ../../COM/osqnx.h ../../COM/packagedb.h ../../COM/packagefile.h ../../COM/propertiesdlg.h ../../COM/resourcemng.h ../../COM/setting.h ../../COM/swmodule.h ../../COM/swmodulestab.h ../../COM/targetos.h ../../COM/typestr.h ../../COM/util.h ../../COM/vmsgbox.h ../../COM/wizexcept.h ../../COM/models/esmcarrier.h ../../COM/models/comexprcarrier.h ../../COM/models/modbbisa201.h ../../COM/models/modbbisa201proptab.h ../../COM/models/modbbisa203n.h ../../COM/models/modbbisa203nproptab.h ../../COM/models/modbbischam.h ../../COM/models/modbbischamisa.h ../../COM/models/modbbisisa.h ../../COM/models/modbbispcigen.h ../../COM/models/modbbispcigenproptab.h ../../COM/models/modbbissmbpcigen.h ../../COM/models/modbbissmbisagen.h ../../COM/models/modbbispcimmod.h ../../COM/models/modbbispcimmodproptab.h ../../COM/models/modbbisd203fam.h ../../COM/models/modbbisd203famproptab.h ../../COM/models/modcpua11.h ../../COM/models/modcpua12.h ../../COM/models/modcpua17.h ../../COM/models/modcpua19.h ../../COM/models/modcpua21.h ../../COM/models/modcpub11.h ../../COM/models/modcpucomexpr.h ../../COM/models/modcpucpcipc.h ../../COM/models/modcpucpciserpc.h ../../COM/models/modcpud2.h ../../COM/models/modcpud4.h ../../COM/models/modcpud6.h ../../COM/models/modcpuesm.h ../../COM/models/modcpuesmexpr.h ../../COM/models/modcpuesmini.h ../../COM/models/modcpuf1n.h ../../COM/models/modcpuf2.h ../../COM/models/modcpuf6.h ../../COM/models/modcpuf7.h ../../COM/models/modcpuf9.h ../../COM/models/modcpuf14.h ../../COM/models/modcpuf19p.h ../../COM/models/modcpug20.h ../../COM/models/modcpupc.h ../../COM/models/modcpupp1.h ../../COM/models/modcpusc24.h ../../COM/models/modexta500.h ../../COM/models/modextcomexpr.h ../../COM/models/modextec01.h ../../COM/models/modextf501.h ../../COM/models/modextf503.h ../../COM/models/modmdisgeneric.h ../../COM/models/modmdischam.h ../../COM/models/modmdischamproptab.h ../../COM/models/modserialproptab.h .obj/mdiswiz1.0.0/ && $(COPY_FILE) --parents ../../COM/cfgmakefile.cpp ../../COM/configuration.cpp ../../COM/descfile.cpp ../../COM/descriptor.cpp ../../COM/devgenericprop.cpp ../../COM/dipbutton.cpp ../../COM/dipswitch.cpp ../../COM/tristatebutton.cpp ../../COM/tristateswitch.cpp ../../COM/execprogram.cpp ../../COM/hexeditwidget.cpp ../../COM/hwcomponent.cpp ../../COM/install.cpp ../../COM/instnamewidget.cpp ../../COM/main.cpp ../../COM/mdiswiz.cpp ../../COM/modelfactory.cpp ../../COM/namemng.cpp ../../COM/osfactory.cpp ../../COM/oslinux.cpp ../../COM/osos9.cpp ../../COM/osqnx.cpp ../../COM/osvxworks.cpp ../../COM/packagedb.cpp ../../COM/packagefile.cpp ../../COM/propertiesdlg.cpp ../../COM/pkg2dsc.cpp ../../COM/pkg2inf.cpp ../../COM/pkgauto.cpp ../../COM/resourcemng.cpp ../../COM/setting.cpp ../../COM/swmodule.cpp ../../COM/swmodulestab.cpp ../../COM/util.cpp ../../COM/vmsgbox.cpp ../../COM/xmldump.cpp ../../COM/models/esmcarrier.cpp ../../COM/models/comexprcarrier.cpp ../../COM/models/modbbisa201.cpp ../../COM/models/modbbisa201proptab.cpp ../../COM/models/modbbisa203n.cpp ../../COM/models/modbbisa203nproptab.cpp ../../COM/models/modbbischam.cpp ../../COM/models/modbbischamisa.cpp ../../COM/models/modbbisisa.cpp ../../COM/models/modbbispcigen.cpp ../../COM/models/modbbispcigenproptab.cpp ../../COM/models/modbbissmbpcigen.cpp ../../COM/models/modbbissmbisagen.cpp ../../COM/models/modbbispcimmod.cpp ../../COM/models/modbbispcimmodproptab.cpp ../../COM/models/modbbisd203fam.cpp ../../COM/models/modbbisd203famproptab.cpp ../../COM/models/modcpua11.cpp ../../COM/models/modcpua12.cpp ../../COM/models/modcpua17.cpp ../../COM/models/modcpua19.cpp ../../COM/models/modcpua21.cpp ../../COM/models/modcpub11.cpp ../../COM/models/modcpucomexpr.cpp ../../COM/models/modcpucpcipc.cpp ../../COM/models/modcpucpciserpc.cpp ../../COM/models/modcpud2.cpp ../../COM/models/modcpud4.cpp ../../COM/models/modcpud6.cpp ../../COM/models/modcpuesm.cpp ../../COM/models/modcpuesmexpr.cpp ../../COM/models/modcpuesmini.cpp ../../COM/models/modcpuf1n.cpp ../../COM/models/modcpuf2.cpp ../../COM/models/modcpuf6.cpp ../../COM/models/modcpuf7.cpp ../../COM/models/modcpuf9.cpp ../../COM/models/modcpuf14.cpp ../../COM/models/modcpuf19p.cpp ../../COM/models/modcpug20.cpp ../../COM/models/modcpupc.cpp ../../COM/models/modcpupp1.cpp ../../COM/models/modcpusc24.cpp ../../COM/models/modexta500.cpp ../../COM/models/modextcomexpr.cpp ../../COM/models/modextec01.cpp ../../COM/models/modextf501.cpp ../../COM/models/modextf503.cpp ../../COM/models/modmdisgeneric.cpp ../../COM/models/modmdischam.cpp ../../COM/models/modmdischamproptab.cpp ../../COM/models/modserialproptab.cpp .obj/mdiswiz1.0.0/ && (cd `dirname .obj/mdiswiz1.0.0` && $(TAR) mdiswiz1.0.0.tar mdiswiz1.0.0 && $(COMPRESS) mdiswiz1.0.0.tar) && $(MOVE) `dirname .obj/mdiswiz1.0.0`/mdiswiz1.0.0.tar.gz . && $(DEL_FILE) -r .obj/mdiswiz1.0.0
-
-
 clean:compiler_clean 
 	-$(DEL_FILE) $(OBJECTS)
 	-$(DEL_FILE) *~ core *.core
 	-$(DEL_DIR) $(OBJECTS_DIR) $(MOCS_DIR)
-
 
 ####### Sub-libraries
 
