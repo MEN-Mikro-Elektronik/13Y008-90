@@ -279,6 +279,8 @@ int main( int argc, char **argv )
 	else  {
 		// Linux 
 		wDebug(("start"));
+		// Set default locale in Linux
+		putenv("LC_ALL=C");
 		G_os		 = OsFactory::create( OsFactory::Linux );
 		wDebug(("start2"));
 	}
