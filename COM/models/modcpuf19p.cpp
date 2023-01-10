@@ -314,8 +314,8 @@ ModCpuF26L::ModCpuF26L( bool withSubDevs ):
 	{	// Create the CPCI bus interface
 	    Q3MemArray<uchar> cpciBusPath(2);
 	    // <pci-dev-nbr> | (<pci-func-nbr> << 5)
-	    cpciBusPath[0] = 0x01 | (0x02<<5);	// PCIe-to-PCIe bridge at bus0
-	    cpciBusPath[1] = 0x00;		// PCIe-to-PCI bridge
+	    cpciBusPath[0] = 0x14 | (0x00 << 5);  // PCI bridge at bus 00 (00:14.0) [14]
+	    cpciBusPath[1] = 0x00 | (0x00 << 5);  // PCI bridge at bus 0d (0d:00.0) [00] -> the boards are connected to this bus
 
 	    busIf1 = new PciBusInterface(
 	       Cpci, 2, 8, 0xf, &cpciBusPath);		// Interface for CompactPci
@@ -374,10 +374,12 @@ ModCpuF27P::ModCpuF27P( bool withSubDevs ):
 	/////////////////////////////////////
     // Interface for CompactPci
 	{	// Create the CPCI bus interface
-	    Q3MemArray<uchar> cpciBusPath(2);
+	    Q3MemArray<uchar> cpciBusPath(4);
 	    // <pci-dev-nbr> | (<pci-func-nbr> << 5)
-	    cpciBusPath[0] = 0x01 | (0x02<<5);	// PCIe-to-PCIe bridge at bus0
-	    cpciBusPath[1] = 0x00;		// PCIe-to-PCI bridge
+	    cpciBusPath[0] = 0x01 | (0x03 << 5);  // PCI bridge at bus 00 (00:01.3) [01 | 0x03 << 5]
+	    cpciBusPath[1] = 0x00 | (0x00 << 5);  // PCI bridge at bus 01 (01:00.0) [00]
+	    cpciBusPath[2] = 0x03 | (0x00 << 5);  // PCI bridge at bus 02 (02:03.0) [03]
+	    cpciBusPath[3] = 0x00 | (0x00 << 5);  // PCI bridge at bus 05 (05:00.0) [00] -> the boards are connected to this bus
 
 	    busIf1 = new PciBusInterface(
 	       Cpci, 2, 8, 0xf, &cpciBusPath);		// Interface for CompactPci
