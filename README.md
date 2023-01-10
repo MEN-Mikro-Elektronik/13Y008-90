@@ -13,6 +13,9 @@ compilation sysroot is necessary. This sysroot comes from an old software server
 be at 192.1.1.22) and it contains a Qt 4.6.0 compilation in it and all the static libraries that are
 needed to create the binary (X11, fontconfig, etc.).
 
+The location of these sysroot needs to be defined in the `builddist.env` file. The variable `QTSYSROOT`
+tells the Makefile where to find all the necessary dependencies and tools.
+
 build steps:
 
 <modify .cpp or .h files as needed>
