@@ -315,7 +315,8 @@ first: all
 all: prepare Makefile $(TARGET)
 
 prepare:
-	$(MKDIR) $(OBJECTS_DIR) $(MOCS_DIR)
+	@$(CHK_DIR_EXISTS) $(OBJECTS_DIR) || $(MKDIR) $(OBJECTS_DIR)
+	@$(CHK_DIR_EXISTS) $(MOCS_DIR) || $(MKDIR) $(MOCS_DIR)
 
 $(TARGET):  $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
@@ -2054,22 +2055,5 @@ compiler_clean: compiler_moc_header_clean
 .obj/moc_modserialproptab.o: .moc/moc_modserialproptab.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/moc_modserialproptab.o .moc/moc_modserialproptab.cpp
 
-####### Install
-
-install_target: first FORCE
-	@$(CHK_DIR_EXISTS) $(INSTALL_ROOT)/home/jorge/Work/MDIS/13Y008-90/NATIVE/DIST_GCC3/../../../../BIN/ || $(MKDIR) $(INSTALL_ROOT)/home/jorge/Work/MDIS/13Y008-90/NATIVE/DIST_GCC3/../../../../BIN/ 
-	-$(INSTALL_PROGRAM) /home/jorge/Work/MDIS/13Y008-90/NATIVE/DIST_GCC3/mdiswiz $(INSTALL_ROOT)/home/jorge/Work/MDIS/13Y008-90/NATIVE/DIST_GCC3/../../../../BIN/
-	-strip $(INSTALL_ROOT)/home/jorge/Work/MDIS/13Y008-90/NATIVE/DIST_GCC3/../../../../BIN/mdiswiz
-
-
-uninstall_target:  FORCE
-	-$(DEL_FILE) -r $(INSTALL_ROOT)/home/jorge/Work/MDIS/13Y008-90/NATIVE/DIST_GCC3/../../../../BIN/mdiswiz
-	-$(DEL_DIR) $(INSTALL_ROOT)/home/jorge/Work/MDIS/13Y008-90/NATIVE/DIST_GCC3/../../../../BIN/ 
-
-
-install:  install_target  FORCE
-
-uninstall: uninstall_target   FORCE
-
-FORCE:
-
+release: all
+	$(STRIP) $(INSTALL_ROOT)/home/jorge/Work/MDIS/13Y008-90/NATIVE/DIST_GCC3/mdiswiz
