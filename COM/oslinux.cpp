@@ -368,12 +368,12 @@ static QString autoconfPath;
 static bool isGoodKernelDir( const QString &kDir, QString &errMsg )
 {
 	// check if it's really a configured linux kernel dir...
-	QFileInfo fi1( kDir + "/Module.symvers" );
+	QFileInfo fi1( kDir + "/include/config/kernel.release" );
 	QFileInfo fi1lnk( fi1.filePath() + ".lnk" );
 
 	if( !fi1.exists() && !fi1lnk.exists()){
 		errMsg += "\"" + kDir +
-			"\" does not look like a configured linux kernel directory (" +
+			"\" does not look like a linux kernel directory (" +
 			fi1.filePath() + " not found)\n";
 		return false;
 	}
