@@ -101,6 +101,21 @@ public:
 	}
 };
 
+class ModCpuG28 : public CpuDeviceSmb
+{
+public:
+	ModCpuG28( bool withSubDevs=true );
+	// create another instance
+	virtual Device *create( bool withSubDevs=true ){
+			return new ModCpuG28( withSubDevs );
+	};
+
+	Arch getArch() { return X86; }
+
+	virtual QString getMainProperties(){
+		return QString("CompactPCI Serial Slot 1 (System Slot)");
+	}
+};
 
 #endif
 
