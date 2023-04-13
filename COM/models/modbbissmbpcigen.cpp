@@ -317,6 +317,7 @@ ModBbisSmbPciGen::applyProperties( DescriptorEntryDirectory *devDesc,
 		if( key == "PCI_BUS_NUMBER" ){
 			WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
 			_prop->pciBusNo = eUint32->getValue();
+			_prop->pciBusNoIsDef=true;
 		}
 		else if ( key == "PCI_DOMAIN_NUMBER" ) {
         	WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
@@ -329,6 +330,7 @@ ModBbisSmbPciGen::applyProperties( DescriptorEntryDirectory *devDesc,
 		else if( key == "PCI_DEVICE_NUMBER" ) {
 			WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
 			_prop->pciDevNo = eUint32->getValue();
+			_prop->pciDevNoIsDef=true;
 		}
 		else if( key == "PCI_FUNCTION_NUMBER" ) {
 			WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
@@ -401,6 +403,7 @@ ModBbisSmbPciGen::applyProperties( DescriptorEntryDirectory *devDesc,
 			e->getParent()->removeChild(e);
 
 	}
+	_prop->useSlotNo = ( !_prop->usePciBusNoAndDevNo());
 
 #ifndef WIN_MDISWIZ_LIB	
 	// notify parent cpu that onboard smb controller is active
@@ -844,13 +847,24 @@ ModBbisSmbPciLinux::enumSwModules()
 }
 
 QString
+ModBbisSmbPciLinux::getDeviceNameTpl()
+{
+	QString devName;
+	if ( this->modelName.contains("SMBPCI") )
+		devName = "SMB2_BUS__idx0";
+	else
+		devName = "SMB2";
+
+	return devName;
+}
+
+QString
 ModBbisSmbPciLinux::getDriverName( bool fullName, bool withSw )
 {
 	UTIL_UNREF_PARAM( fullName );
 	UTIL_UNREF_PARAM( withSw );
 	QString rv = "SMB2";
-
-    return rv;
+	return rv;
 }
 
 // add child to list of children (and set child's parent)

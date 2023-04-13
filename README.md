@@ -8,14 +8,20 @@ The MDIS wizard contains all CPUs and carrier boards for configuring a system.
 Building MDIS Wizard:
 ---------------------
 
-to build the MDIS Wizard the repo must be checked out on the old software server (192.1.1.22) because
-of QT and tool chain available only there.
+The MDIS Wizzard`s code is based on fairly old QT4 code with QT3 support in it. To build it a compatible
+compilation sysroot is necessary. This sysroot comes from an old software server at MeN (used to
+be at 192.1.1.22) and it contains a Qt 4.6.0 compilation in it and all the static libraries that are
+needed to create the binary (X11, fontconfig, etc.).
+
+The location of these sysroot needs to be defined in the `builddist.env` file. The variable `QTSYSROOT`
+tells the Makefile where to find all the necessary dependencies and tools.
 
 build steps:
 
 <modify .cpp or .h files as needed>
 
 cd NATIVE/DIST_GCC3/
+source builddist.env
 make
 
 (the warnings at the end can be ignored, they result from libraries mismatching on the swserver)
@@ -37,3 +43,7 @@ qfsfileengine_unix.cpp:(.text+0x708): warning: Using 'getpwuid_r' in statically 
 /usr/X11/lib/libX11.a(x11trans.o): In function `_X11TransSocketINETConnect':
 (.text+0x1e1b): warning: Using 'getservbyname' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
 ts@swserver:~/work/LINUX/TOOLS/MDISWIZ/NATIVE/DIST_GCC3>
+
+Notice
+----------------------
+Before releasing new release please update common version string (*mdiswizVersion*) and OS version string (e.g. for Linux: *mdiswizLinuxVersion*).

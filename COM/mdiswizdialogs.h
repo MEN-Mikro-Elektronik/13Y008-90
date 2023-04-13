@@ -51,9 +51,32 @@
 #include <Q3HBoxLayout>
 #include <Q3VBoxLayout>
 
+#include "configuration.h"
+
 class MdisWizListView;
 class ComponentViewItem;
 class HwComponent;
+
+class MdisDeviceListViewItem : public Q3ListViewItem{
+public:
+	MdisDeviceListViewItem(Q3ListView * parent, const char * name0, const char * name1, const char * name2) : Q3ListViewItem( parent, name0, name1, name2 ) {};
+	void paintCell( QPainter *p, const QColorGroup &cg,
+					int column, int width, int alignment )
+		{
+		    QColorGroup _cg( cg );
+		    QColor c = _cg.text();
+			if ( column == 1 )
+			{
+			    _cg.setColor( QColorGroup::Text, QColor("red") );
+				Q3ListViewItem::paintCell( p, _cg, column, width, alignment );
+			}
+			else
+			{
+				_cg.setColor( QColorGroup::Text, c );
+				Q3ListViewItem::paintCell( p, _cg, column, width, alignment );
+			}
+		}
+};
 
 //! add component widget
 /*!
@@ -66,7 +89,8 @@ public:
 	//! creates the add component dialog
 	AddComponentWidget(QWidget *parent,
 					   const char *name,
-					   const QString &text) : QWidget( parent, name )
+					   const QString &text,
+					   const bool addEOSNote=false) : QWidget( parent, name )
 	{
         Q3VBoxLayout *vb = new Q3VBoxLayout(this,10);
 
@@ -76,17 +100,37 @@ public:
 		listBox = new Q3ListView( this, "listView" );
 		listBox->setMinimumHeight( 200 );
 		listBox->addColumn( "Model" );
+		listBox->addColumn( "Note" );
 		listBox->addColumn( "Description" );
 		listBox->setColumnWidthMode( 0, Q3ListView::Maximum );
 		listBox->setAllColumnsShowFocus( true );
 
 		vb->addWidget( listBox );
+		if ( addEOSNote )
+		{
+			QString depracatedComponentTextLine0("<font color=\"black\">Note column tags:</font>");
+			QString depracatedComponentTextLine1("<font color=\"red\">EOS: No longer maintained (see supported_components.md)</font>");
+			QLabel *label = new QLabel();
+			label->setText(depracatedComponentTextLine0 + "<br>" + depracatedComponentTextLine1);
+			vb->addWidget(label);
+		}
 	}
 
 	//! add an entry to the list of selectable components
 	void addItem( const QString &compStr, const QString &description )
 	{
-		(void) new Q3ListViewItem( listBox, compStr, description );
+		Configuration *currentCfg=MAIN_GetCurrentCfg();
+		ComponentEosEolList *depracatedComponents=currentCfg->getLstDepracatedComponents();
+
+		if ( depracatedComponents->find(DepracatedComponent::EOS, compStr) ||
+			 depracatedComponents->find(DepracatedComponent::EOL, compStr)	)
+		{
+			(void) new MdisDeviceListViewItem( listBox, compStr, "EOS", description );
+		}
+		else
+		{
+			(void) new MdisDeviceListViewItem( listBox, compStr, "", description );
+		}
 	}
 
 	//! clear list of selectable components
@@ -126,6 +170,12 @@ public:
 
 		Q3HBoxLayout *hb = new Q3HBoxLayout();
 		vb->addLayout( hb );
+
+		QString depracatedComponentTextLine0("<font color=\"black\">Note column tags:</font>");
+		QString depracatedComponentTextLine1("<font color=\"red\">EOS: No longer maintained (see supported_components.md)</font>");
+		QLabel *label = new QLabel();
+		label->setText(depracatedComponentTextLine0 + "<br>" + depracatedComponentTextLine1);
+		hb->addWidget(label);
 		hb->addStretch(1);
 
 		but = new QPushButton("OK", this);

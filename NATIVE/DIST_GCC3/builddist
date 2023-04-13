@@ -7,4 +7,4 @@
 . ./builddist.env
 
 make clean
-make && make install
+make && make release

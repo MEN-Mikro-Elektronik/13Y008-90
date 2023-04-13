@@ -13,6 +13,7 @@ class Q3HBoxLayout;
 class QSpinBox;
 class Q3ComboBox;
 class QLabel;
+class QCheckBox;
 
 // 
 // This dialog tab presents either the PCI slot number only
@@ -20,7 +21,7 @@ class QLabel;
 // selected by the hasPciBusPath parameter
 //
 class ModBbisPciGenPropTab : public DevPropertiesTab {
-	//Q_OBJECT
+	Q_OBJECT
 public:
 	ModBbisPciGenPropTab(
 		QWidget *parent,
@@ -31,12 +32,15 @@ public:
 	virtual void updateProperties();
 	virtual void setProperties();
 
-protected slots:
+private slots:
+	void enablePciFields(int state);
+
 private:
     bool hasPciBusPath; 
-
+    QLabel *pciBusNoInfo0, *pciBusNoInfo1, *pciBusNoLabel, *pciDevNoLabel;
 	Q3ComboBox *pciSlotCbox;
 	QSpinBox  *pciBusNoSpBox, *pciDevNoSpBox, *pciDomNoSpBox;
+	QCheckBox *pciBusSlotParameter;
 };
 
 // 

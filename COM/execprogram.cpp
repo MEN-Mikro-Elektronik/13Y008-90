@@ -106,7 +106,15 @@ ExecProgram::ExecProgram(
 	Q3HBoxLayout *butHb = new Q3HBoxLayout();
 	vb->addLayout( butHb );
 
+	// create edit field
+	cmdText = new QLineEdit();
+	butHb->addWidget( cmdText );
 	// create buttons
+	sendCmd = new QPushButton("Send", this );
+	butHb->addWidget( sendCmd );
+	sendCmd->setEnabled( true );
+	connect( sendCmd, SIGNAL(clicked()), this, SLOT(slotSendCmd()));
+
 	okBut = new QPushButton("Close", this );
 	butHb->addStretch(1);
 	butHb->addWidget( okBut );
@@ -192,6 +200,9 @@ ExecProgram::slotProcessExited()
 
 	okBut->setEnabled( true );
 	cancelBut->setEnabled( false );
+	cmdText->setEnabled( false );
+	sendCmd->setEnabled( false );
+
 }
 
 //! called when user attempts to close the window
@@ -229,5 +240,14 @@ ExecProgram::slotCancel()
 	finishReason = QString( "canceled");
 }
 
+//! send data into script
+void
+ExecProgram::slotSendCmd()
+{
+	QString cmdTextQString=cmdText->text();
+	cmdTextQString += "\n";
+	proc->writeToStdin( cmdTextQString );
+	cmdText->clear();
+}
 
 

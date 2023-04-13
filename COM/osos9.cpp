@@ -895,7 +895,7 @@ QString OsOs9Configuration::loadMakefileKeyVal( QString &errMsg, QString key )
 	catch( CfgMakefile::Except &e )
 	{
 		errMsg += e.getMsg();
-		return false;
+		return QString::null;
 	}
 
 	// process the scanned tuples

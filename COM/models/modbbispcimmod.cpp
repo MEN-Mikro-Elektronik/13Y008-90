@@ -331,6 +331,7 @@ ModBbisPciMmod::applyProperties( DescriptorEntryDirectory *devDesc,
 		else if( key == "PCI_BUS_NUMBER" ){
 			WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
 			_prop->pciBusNo = eUint32->getValue();
+			_prop->pciBusNoIsDef=true;
 		}
 		else if ( key == "PCI_DOMAIN_NUMBER" )
         {
@@ -340,6 +341,7 @@ ModBbisPciMmod::applyProperties( DescriptorEntryDirectory *devDesc,
 		else if( key == "PCI_DEVICE_ID" ){
 			WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
 			_prop->pciDevNo = eUint32->getValue();
+			_prop->pciDevNoIsDef=true;
 		}
 		else if( key == "PCI_BUS_PATH" ){
 			Q3MemArray<uchar> busPath;
@@ -370,6 +372,7 @@ ModBbisPciMmod::applyProperties( DescriptorEntryDirectory *devDesc,
 			e->getParent()->removeChild(e);
 
 	}
+	_prop->useSlotNo = ( !_prop->usePciBusNoAndDevNo()) ;
 
 	return Device::applyProperties( devDesc, errMsg );
 }
@@ -384,10 +387,8 @@ ModBbisPciMmod::getMainProperties()
 
 	if( busIf ){
 		WIZ_ASSERT( getParent() );
-
 		rv = getParent()->getMainProperties();
-
-		if( busIf->hasPciBusPath() )
+		if( busIf->hasPciBusPath() && !_prop->usePciBusNoAndDevNo() )
 			rv += QString(" Slot %1").arg(_prop->slotNo);
 		else {
 			if( _prop->pciDomainNo > 0 )
@@ -416,7 +417,7 @@ ModBbisPciMmod::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 
 	wDebug(("ModBbisPciMmod::createSpecialDesc"));
 
-	if( busIf && busIf->hasPciBusPath() ){
+	if( busIf && !_prop->usePciBusNoAndDevNo() ){
 
 		// PCI_BUS_PATH
 		Q3MemArray<uchar> busPath;

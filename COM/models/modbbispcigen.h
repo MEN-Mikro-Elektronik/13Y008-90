@@ -81,11 +81,27 @@
 class ModBbisPciGenProperties : public DeviceProperties
 {
 public:
+	ModBbisPciGenProperties() {
+		slotNo=0;
+		pciDevNo=0;
+		pciDevNoIsDef=false;
+		pciBusNo=0;
+		pciBusNoIsDef=false;
+		pciDomainNo=0;
+		skipDevBridgeChk=0;
+		useSlotNo=true;
+	};
 	int slotNo;			 //!< PCI geographical slot number
 	int pciDevNo;		 //!< PCI device number
+	bool pciDevNoIsDef; //!< PCI bus number defined directly
 	int pciBusNo;		 //!< PCI bus number of PCI bus on carrier
+	bool pciBusNoIsDef; //!< PCI bus number defined directly
 	int pciDomainNo;     //!< PCI domain number
 	int skipDevBridgeChk;//!< PCI bridge iteration skipping
+	bool useSlotNo;
+	bool usePciBusNoAndDevNo(){
+		return pciDevNoIsDef && pciBusNoIsDef;
+	};
 #ifdef WIN_MDISWIZ_LIB
 	Q3MemArray<uchar> 	pciBusPath; //!< PCI bus path
 #endif

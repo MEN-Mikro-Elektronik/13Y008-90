@@ -333,7 +333,15 @@ extern QWidget *G_mainWindow; //!< used as anchor for dialog
 extern QApplication *G_qApp;  //!< main application
 
 // strings
-static const QString mdiswizLinuxVersion("linux-13.0");
+/*!
+  OS version string
+
+  OS version os-x.y
+
+  os  = OS name
+  x.y = Major/Minor version number
+*/
+static const QString mdiswizLinuxVersion("linux-14.2");
 static const QString sysDescPlainName("system");
 static const QString sysDescName( sysDescPlainName + ".dsc");
 static const QString makeName("Makefile");
@@ -341,7 +349,6 @@ static const QString defMenLinuxPath("/opt/menlinux");
 static const QString elinosSubPath("src/mdis");
 static const QString packageDbPath("PACKAGE_DESC");
 static void setAutoConfDir( QString kernelDir );
-static QString runAsRootGraphical;
 static QString elinosRootPath;
 static QString menLinuxPath; // typicall /opt/menlinux
 static QString autoconfPath;
@@ -360,8 +367,8 @@ static QString autoconfPath;
 */
 static bool isGoodKernelDir( const QString &kDir, QString &errMsg )
 {
-	// check if it's really a linux kernel include dir...
-	QFileInfo fi1( kDir + "/include/linux/kernel.h" );
+	// check if it's really a configured linux kernel dir...
+	QFileInfo fi1( kDir + "/include/config/kernel.release" );
 	QFileInfo fi1lnk( fi1.filePath() + ".lnk" );
 
 	if( !fi1.exists() && !fi1lnk.exists()){
@@ -558,7 +565,7 @@ public:
 			"The development host is the same as your target system. Uses "
 			"the GNU compiler tool chain." <<
 
-			"Cross compilation with SYSGO's embedded Linux distribution" <<
+			"Cross compilation with SYSGO's embedded Linux distribution (EOL)" <<
 
 			"Other environment, e.g. ELDK";
 
@@ -859,7 +866,7 @@ public:
 
 			"Include debug strings. Modules run slower.";
 
-		_value = QVariant(choises[Dbg]);
+		_value = QVariant(choises[Nodbg]);
 	}
 
 	virtual Setting *clone(){
@@ -1153,7 +1160,7 @@ public:
 		vb->addWidget( lab );
 
 		lab = new QLabel(
-			"<font color=\"red\">To generate an initial config (scan system) click Cancel and use button \"scan\" from the toolbar.\n</font>", this );
+			"To generate an initial config (scan system) click Cancel and use button \"scan\" from the toolbar.\n", this );
 		vb->addWidget( lab );
 		
 		lab = new QLabel( "Please choose your initial action:", this );
@@ -1205,8 +1212,6 @@ OsLinux::OsLinux() : TargetOs( OsFactory::Linux )
 	menLinuxPath = getenv("MEN_LIN_DIR");
 	if( menLinuxPath.isEmpty() )
 		menLinuxPath = OsLinuxConfiguration::hostSpecPath(defMenLinuxPath);
-	runAsRootGraphical = "which gksudo && export RUNASROOT=gksudo || export RUNASROOT=pkexec && $RUNASROOT";
-
 }
 
 Configuration *
@@ -1325,10 +1330,17 @@ OsLinux::startup( int argc, char **argv )
 QString
 OsLinux::driverName( QString plainName, Device *dev )
 {
-	QString name = "men_";
+	QString name;
+	if ( !plainName.startsWith("men_", Qt::CaseInsensitive) ) {
+		name = "men_";
+	}
+	else {
+		return plainName.lower();
+	}
 
 	switch( dev->type() ){
 	case Device::Mdis:
+	case Device::MdisCham:
 		MdisDevice *mdev;
 		WIZ_DYNAMIC_CAST( dev, mdev, MdisDevice *);
 
@@ -2100,7 +2112,7 @@ OsLinuxConfiguration::cdkChanged( int cdkIdx )
 		settingBinInstallDir->	setValue( "/usr/local/bin");
 		settingLibInstallDir->	setValue( "/usr/local/lib");
 		settingStaticLibInstallDir->setValue( "/usr/local/lib");
-		settingDbg->			setValue( "dbg");
+		settingDbg->			setValue( "nodbg");
 		settingLibMode->		setValue( "shared");
 		settingTargetTree->		setEnabled(Setting::Hide);
 		settingDescInstallDir->	setValue( "/etc/mdis" );
@@ -2137,7 +2149,7 @@ OsLinuxConfiguration::cdkChanged( int cdkIdx )
 		settingDevNodeInstallDir->setValue( "$(ELINOS_PROJECT)/app.rootfs/dev" );
 		settingStaticLibInstallDir->setValue( unknownPath );
 		settingStaticLibInstallDir->setEnabled(Setting::Disabled);
-		settingDbg->			setValue( "dbg");
+		settingDbg->			setValue( "nodbg");
 		settingLibMode->		setValue( "shared");
 		settingLibMode->		setEnabled(Setting::Disabled); // for now
 		settingTargetTree->		setEnabled(Setting::Hide);
@@ -2152,7 +2164,7 @@ OsLinuxConfiguration::cdkChanged( int cdkIdx )
 		settingBinInstallDir->	setValue( "$(TARGET_TREE)/usr/bin");
 		settingLibInstallDir->	setValue( "$(TARGET_TREE)/usr/lib");
 		settingStaticLibInstallDir->setValue( unknownPath );
-		settingDbg->			setValue( "dbg");
+		settingDbg->			setValue( "nodbg");
 		settingLibMode->		setValue( "static");
 		settingTargetTree->		setValue( unknownPath );
 		settingDescInstallDir->	setValue( "$(TARGET_TREE)/etc/mdis" );
@@ -2730,7 +2742,7 @@ OsLinuxNewProjectWizard::OsLinuxNewProjectWizard(
 
 	// Add page to select CPU board:
 	cpuWdg = new AddComponentWidget(this, 0,
-		"Please select your target CPU board from the list below:");
+		"Please select your target CPU board from the list below:", true);
 
 	addPage( cpuWdg, "Select a CPU board" );
 	setHelpEnabled( cpuWdg, false );
@@ -3070,7 +3082,7 @@ void LinuxMdiswiz::slotScan()
 {
 	QStringList args;
 	//pass MEN_LIN_DIR to script
-	args << "sh" << "-c" << runAsRootGraphical + " " + menLinuxPath + "/scan_system.sh " + menLinuxPath ;
+	args << "sh" << "-c" << menLinuxPath + "/scan_system.sh " + menLinuxPath;
 	doBuild( "Scanning system and generating example system.dsc", args, 1 );
 }
 
@@ -3090,7 +3102,7 @@ void LinuxMdiswiz::slotRebuild()
 {
 	QStringList args;
 
-	args << "sh" << "-c" << "echo  \"MEN_LIN_DIR=$MEN_LIN_DIR ELINOS_PROJECT=$ELINOS_PROJECT\"; make clean; make";
+	args << "sh" << "-c" << "echo \"MEN_LIN_DIR=$MEN_LIN_DIR ELINOS_PROJECT=$ELINOS_PROJECT\"; make clean; make";
 
 	doBuild( "Rebuilding Project (make clean; make)", args, 0 );
 }
@@ -3099,21 +3111,14 @@ void LinuxMdiswiz::slotRebuild()
 void LinuxMdiswiz::slotBuildInstall()
 {
 	QStringList args;
-	QString cmd;
 
 #ifdef _WIN32
 	/* no kdesu available/needed */
 	args << "make install";
 #else
-	if( menLinuxPath != defMenLinuxPath )
-		cmd += "export MEN_LIN_DIR=" + menLinuxPath + "; ";
-	// must explicitely change to the MDIS project dir
-	// in some environments (SUSE 9.1) kdesud executes
-	// the command otherwise in /root
-	// ts: 12/2012: use gksudo in newer installations
-	args << "sh" << "-c" << "echo  \"MEN_LIN_DIR=$MEN_LIN_DIR ELINOS_PROJECT=$ELINOS_PROJECT\"; " + runAsRootGraphical + " make install";
+	args << "sh" << "-c" << "echo \"MEN_LIN_DIR=$MEN_LIN_DIR ELINOS_PROJECT=$ELINOS_PROJECT\"; make install";
 #endif
-	doBuild( "Installing Project (make install as root)", args, 0 );
+	doBuild( "Installing Project (make install)", args, 0 );
 }
 
 

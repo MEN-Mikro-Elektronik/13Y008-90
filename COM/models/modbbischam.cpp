@@ -202,6 +202,7 @@
 #include "modbbischam.h"
 #include "modmdischam.h"
 #include "modbbissmbpcigen.h"
+#include "modserialproptab.h"
 #include "wizdebug.h"
 #include "mdiswiz.h"
 #include "configuration.h"
@@ -430,7 +431,9 @@ ModBbisCham::applyProperties( DeviceProperties *newProp,
 			goto abort;
 		}
 		else if( s != (ulong)_prop->slotNo ){
-			msg.sprintf("Alternative address 0x%lx allocated\n", s );
+			if ( !_prop->usePciBusNoAndDevNo() ) {
+				msg.sprintf("Alternative address 0x%lx allocated\n", s );
+			}
 			_prop->slotNo = s;
 			errMsg += msg;
 			ar = ApplyPropAlternate;
@@ -550,13 +553,15 @@ ModBbisCham::applyProperties( DescriptorEntryDirectory *devDesc,
 	{
 	    WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
 	    _prop->pciDevNo = eUint32->getValue();
+	    _prop->pciDevNoIsDef=true;
 	    wDebug((" key PCI_DEVICE_NUMBER: value = %d", _prop->pciDevNo ));
 
 	} else if ( key == "PCI_BUS_NUMBER" ) {
 
 	    WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
 	    _prop->pciBusNo = eUint32->getValue();
-	    wDebug(("XXXXX key PCI_DEVICE_NUMBER: value = %d", _prop->pciBusNo ));
+	    _prop->pciBusNoIsDef=true;
+	    wDebug(("XXXXX key PCI_BUS_NUMBER: value = %d", _prop->pciBusNo ));
 
 	} else if ( key == "PCI_DOMAIN_NUMBER" ) {
 	    WIZ_DYNAMIC_CAST( e, eUint32, DescriptorEntryUint32 *);
@@ -649,7 +654,8 @@ ModBbisCham::applyProperties( DescriptorEntryDirectory *devDesc,
             e->getParent()->removeChild(e);
 
     }
-	
+    _prop->useSlotNo = ( !_prop->usePciBusNoAndDevNo()) ;
+
     return Device::applyProperties( devDesc, errMsg );
 }
 
@@ -669,11 +675,9 @@ ModBbisCham::getMainProperties()
 	wDebug(( "ModBbisCham::getMainProperties() _prop->pciBusNo = %d", _prop->pciBusNo ));
 
 	PciBusInterface *busIf = (PciBusInterface *)getParent();
-	if( busIf ) {
-
+	 if( busIf ) {
 		rv = getParent()->getMainProperties();
-
-		if( busIf->hasPciBusPath() )
+		if( busIf->hasPciBusPath() && !_prop->usePciBusNoAndDevNo() )
 			rv += QString(" Slot %1").arg(_prop->slotNo);
 		else {
 			if( _prop->pciDomainNo > 0 )
@@ -732,8 +736,8 @@ ModBbisCham::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 	{
 		wDebug(( "	mezzanine given ----------------------" ));
 		
-		// no PCI bus path?
-		if( !busIf->hasPciBusPath() ) {
+		// use Pci Bus / Dev number?
+		if( _prop->usePciBusNoAndDevNo() ) {
 
 			int pciDevNo;
 
@@ -750,7 +754,7 @@ ModBbisCham::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 			wDebug(( "ModBbisCham::createSpecialDesc: addChild(PCI_BUS_NUMBER): _prop->pciBusNo = %d", _prop->pciBusNo ));
 			parentDesc->addChild( dFact.create("PCI_BUS_NUMBER", _prop->pciBusNo ));
 			wDebug(( "ModBbisCham::createSpecialDesc: addChild(PCI_DEVICE_NUMBER): _prop->pciDevNo = %d", _prop->pciDevNo ));
-	        parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", pciDevNo ));
+			parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", _prop->pciDevNo ));
 
 			// PCI_BUS_SLOT not necessary
 			if (_prop->pciDomainNo != 0 ) {
@@ -790,12 +794,9 @@ ModBbisCham::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 				parentDesc->addChild( dFact.create("PCI_DOMAIN_NUMBER", _prop->pciDomainNo ) );
 			}
 
-            //parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath ));
-            //parentDesc->addChild( dFact.create("PCI_BUS_SLOT", _prop->slotNo ));
+            parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath ));
+            parentDesc->addChild( dFact.create("PCI_BUS_SLOT", _prop->slotNo ));
 	        //parentDesc->addChild( dFact.create("PCI_DEVICE_ID", _prop->pciDevNo ));
-	        parentDesc->addChild( dFact.create("PCI_BUS_NUMBER", _prop->pciBusNo ));
-	        parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", _prop->pciDevNo ));
-
 	        
 	        if (this->chamSmbActive)
 	        {
@@ -818,7 +819,7 @@ ModBbisCham::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 		wDebug(( "	onboard given ----------------------" ));
 		
 		// no PCI bus path?
-    	if( !busIf->hasPciBusPath() ) {
+        if( !busIf->hasPciBusPath()  && _prop->usePciBusNoAndDevNo() ) {
 			wDebug(( "	busIf->hasPciBusPath() is false..." ));
 	        // for now, take the last element of busPath...
 	        Q3MemArray<uchar> busPath;
@@ -865,10 +866,8 @@ ModBbisCham::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
 				parentDesc->addChild( dFact.create("PCI_DOMAIN_NUMBER", _prop->pciDomainNo ) );
 	        }
 
-	        //parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath ));
-	        //parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", devNum ));
-	        parentDesc->addChild( dFact.create("PCI_BUS_NUMBER", _prop->pciBusNo ));
-	        parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", _prop->pciDevNo ));
+	        parentDesc->addChild( dFact.create("PCI_BUS_PATH", busPath ));
+	        parentDesc->addChild( dFact.create("PCI_DEVICE_NUMBER", devNum ));
 
 	        if (this->chamSmbActive)
 	        {
@@ -890,7 +889,7 @@ ModBbisCham::createSpecialDesc( DescriptorEntryDirectory *parentDesc )
         wDebug(( "   non-onboard" ));
         
 		// PCI bus path given?
-        if( busIf->hasPciBusPath() ){
+        if( busIf->hasPciBusPath()  && !_prop->usePciBusNoAndDevNo() ){
         	
             // PCI_BUS_PATH
             Q3MemArray<uchar> busPath;
@@ -1173,8 +1172,14 @@ ModBbisCham::createPropDlg( QWidget *parent )
 	// ts@men: here the tab "Mezzanine Settings" for MEZZ_CHAM devices is shown
 	PciBusInterface *busIf;
 	WIZ_DYNAMIC_CAST( getParent(), busIf, PciBusInterface * );
-	if( (busIf->getIsPciE() && !busIf->hasPciBusPath()) || (!busIf->getIsPciE()) ){
+	//if( (busIf->getIsPciE() && !busIf->hasPciBusPath()) || (!busIf->getIsPciE()) ){
+	if( (!busIf->getIsPciE()) ){
 	    dp->addTab( (defTab = new ModBbisPciMmodPropTab(parent, dp)),
+	                QString("%1 Settings").arg( busIfTypeMap.keyToStr(
+	                    getBusIfType() )));
+	}
+	else {
+	    dp->addTab( (defTab = new ModSerialPropTab(parent, dp)),
 	                QString("%1 Settings").arg( busIfTypeMap.keyToStr(
 	                    getBusIfType() )));
 	}

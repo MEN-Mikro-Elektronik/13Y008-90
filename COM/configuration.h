@@ -134,6 +134,9 @@ public:
 	//! get direct pointer to list of SwModule objects
 	SwModuleList *getLstSwModules() { return &lstSwModules; }
 
+	//! get direct pointer to list of depracated components
+	ComponentEosEolList *getLstDepracatedComponents() { return &lstDepracatedModules; };
+
 	//! get name of configuration
 	QString configName() { return cfgName; }
 
@@ -214,6 +217,7 @@ protected:
 
 	SwModuleList lstSwModules;				//!< list of Sw modules
 	SettingList lstSettings;				//!< list of Settings
+	ComponentEosEolList lstDepracatedModules;	//!< list of Depracated Modules
 
 	bool mdisSupportsPciDomains;            //!< flag for pciDomain Support
 	bool cpuUsesPciDomains;

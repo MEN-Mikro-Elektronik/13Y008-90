@@ -275,7 +275,7 @@ ModCpuF23P::ModCpuF23P( bool withSubDevs ):
 
 		// _minSlot must be !=-1 so that hasPciBusPath() reports true
 	    busIf1 = new PciBusInterface(
-	        CpciSer, i, i, 0, &cpciBusPath);
+	        CpciSer, -1, i, 0, &cpciBusPath);
 		busIf1->setInstName( QString("CompactPCI Serial slot %1").arg(i) );
 		addChild( busIf1 );
 	}
@@ -314,8 +314,72 @@ ModCpuF26L::ModCpuF26L( bool withSubDevs ):
 	{	// Create the CPCI bus interface
 	    Q3MemArray<uchar> cpciBusPath(2);
 	    // <pci-dev-nbr> | (<pci-func-nbr> << 5)
-	    cpciBusPath[0] = 0x01 | (0x02<<5);	// PCIe-to-PCIe bridge at bus0
-	    cpciBusPath[1] = 0x00;		// PCIe-to-PCI bridge
+	    cpciBusPath[0] = 0x14 | (0x00 << 5);  // PCI bridge at bus 00 (00:14.0) [14]
+	    cpciBusPath[1] = 0x00 | (0x00 << 5);  // PCI bridge at bus 0d (0d:00.0) [00] -> the boards are connected to this bus
+
+	    busIf1 = new PciBusInterface(
+	       Cpci, 2, 8, 0xf, &cpciBusPath);		// Interface for CompactPci
+	    busIf1->setInstName( QString("CompactPci Bus"));
+	    addChild( busIf1 );
+	}
+
+	/////////////////////////////////////
+    // Interface for CompactPci Serial
+	Q3MemArray<uchar> cpciBusPath(1);
+
+	for( i=2; i<MAX_PCISER_SLOTS+2; i++ ){
+		switch( i ){
+			// <pci-dev-nbr> | (<pci-func-nbr> << 5)
+			case 2: cpciBusPath[0] = 0x1c | (0x00<<5); break;
+			case 3: cpciBusPath[0] = 0x1c | (0x01<<5); break;
+			case 4: cpciBusPath[0] = 0x1c | (0x02<<5); break;
+			case 5: cpciBusPath[0] = 0x1c | (0x03<<5); break;
+		}
+
+		// _minSlot must be !=-1 so that hasPciBusPath() reports true
+	    busIf1 = new PciBusInterface(
+	        CpciSer, -1, i, 0, &cpciBusPath);
+		busIf1->setInstName( QString("CompactPCI Serial slot %1").arg(i) );
+		addChild( busIf1 );
+	}
+}
+
+// mmo@men: F27P added 20.9.2021
+// -----------------------------------------------------------------
+// CPU F27P
+
+//! Creates an F27P CPU device
+/*!
+  including the bus interfaces and, if \a withSubDevs is \c true, the
+  BBIS devices
+*/
+ModCpuF27P::ModCpuF27P( bool withSubDevs ):
+		ModCpuF14( withSubDevs, false )
+{	
+	BusInterface *busIf1=0;
+	int i;
+
+	UTIL_UNREF_PARAM(withSubDevs);
+
+	// delete CPU cores from parent class and set it new
+	lstCpuCores = Q3ValueList<CpuCore>(); 
+	lstCpuCores << Pentium4 << Athlon;
+
+    setHwName( "F27P" );
+    setDescription( "CompactPCI PlusIO AMD Ryzen Embedded V1000 APU CPU" );
+
+    
+	// Create the bus interfaces
+
+	/////////////////////////////////////
+    // Interface for CompactPci
+	{	// Create the CPCI bus interface
+	    Q3MemArray<uchar> cpciBusPath(4);
+	    // <pci-dev-nbr> | (<pci-func-nbr> << 5)
+	    cpciBusPath[0] = 0x01 | (0x03 << 5);  // PCI bridge at bus 00 (00:01.3) [01 | 0x03 << 5]
+	    cpciBusPath[1] = 0x00 | (0x00 << 5);  // PCI bridge at bus 01 (01:00.0) [00]
+	    cpciBusPath[2] = 0x03 | (0x00 << 5);  // PCI bridge at bus 02 (02:03.0) [03]
+	    cpciBusPath[3] = 0x00 | (0x00 << 5);  // PCI bridge at bus 05 (05:00.0) [00] -> the boards are connected to this bus
 
 	    busIf1 = new PciBusInterface(
 	       Cpci, 2, 8, 0xf, &cpciBusPath);		// Interface for CompactPci
@@ -342,4 +406,5 @@ ModCpuF26L::ModCpuF26L( bool withSubDevs ):
 		busIf1->setInstName( QString("CompactPCI Serial slot %1").arg(i) );
 		addChild( busIf1 );
 	}
+	
 }

@@ -581,10 +581,8 @@ Installer::analyzeDir(
 				InstallerAction *act = new InstallerAction;
 			
 				// check for special files in root dir
-				if( relPath == QString::null && 
-					(fi->fileName() == "history.txt" ||
-					 fi->fileName() == "tree.txt") ||
-					 fi->fileName() == "Copying" ){	  
+				if( relPath == QString::null &&
+					fi->fileName() == "Copying" ){
 
 					// copy them as file_pkg.txt
 					QFileInfo fi2( dstFileName );

@@ -143,7 +143,40 @@ ModCpuG22::ModCpuG22( bool withSubDevs ):
 	}
 }
 
+SwModuleList *
+ModCpuG22::enumSwModules()
+{
+	SwModule *swMod;
+	SwModuleTypes::ModType type = SwModuleTypes::NativeDriver;
+	swMod = new SwModule( type, "G22_g2x", "DRIVERS/Z001_SMB/driver_g2x.mak",
+						 "G22 special IO mapped driver" );
 
+	if( lstSwModules == 0 && swMod )
+		lstSwModules = new SwModuleList;
+
+	if( lstSwModules && swMod )
+	{
+		lstSwModules->add( swMod );
+	}
+	else if ( swMod )
+	{
+		delete swMod;
+		return lstSwModules;
+	}
+	else
+	{
+		return lstSwModules;
+	}
+
+	swMod = new SwModule( type, "men_lx_chameleon", "DRIVERS/CHAMELEON/driver.mak",
+						 "Linux native chameleon driver" );
+	if( swMod )
+	{
+		lstSwModules->add( swMod );
+	}
+
+	return lstSwModules;
+}
 // -----------------------------------------------------------------
 // CPU G23
 
@@ -262,5 +295,63 @@ ModCpuG25A::ModCpuG25A( bool withSubDevs ):
         
     	this->smbBbisList.push_back(smbBbis);
 		
+	}
+}
+
+// -----------------------------------------------------------------
+// CPU G28
+
+//! Creates an G28 CPU device
+/*!
+  including the bus interfaces and, if \a withSubDevs is \c true, the
+  BBIS devices
+*/
+ModCpuG28::ModCpuG28( bool withSubDevs ):
+	CpuDeviceSmb( QString("G28"), QString("PC"), false, true, 1 )
+{
+	BusInterface *busIf1=0;
+	ModBbisSmbPciGen* smbBbis = 0;
+	int i;
+
+	UTIL_UNREF_PARAM(withSubDevs);
+
+	lstCpuCores << Pentium4;
+
+	setDescription("CompactPCI Serial Intel Xeon W CPU");
+	setInstName("CPU");
+
+	// Create the bus interfaces
+
+	/////////////////////////////////////
+	// Interface for CompactPci Serial
+	// ts@men: Theres no chance anymore for SW to automatically set the
+	// location for a certain G2xx card depending on her slot. So, leave
+	// _minSlot =-1 so that hasPciBusPath() reports false, this causes
+	// the "Mezzanine settings" Tab to appear in the properties of the mezzanine card.
+
+	for( i=2; i<MAX_PCISER_SLOTS+2; i++ ){
+		busIf1 = new PciBusInterface( CpciSer );
+		busIf1->setInstName( QString("CompactPCI Serial slot %1").arg(i) );
+		addChild( busIf1 );
+	}
+
+	/////////////////////////////////////
+	// SMBus
+	{
+		Q3MemArray<uchar> smbBusPath(1);
+		// <pci-dev-nbr> | (<pci-func-nbr> << 5)
+		smbBusPath[0] = 0x1f | (0x04<<5);
+
+		// cannot store the pci bus path in the busIf because one busIf can have several
+		// smb controller children
+		this->smbusIf = new PciBusInterface( LocalBus, -1, -1, 0, 0, false );
+		this->smbusIf->setInstName( QString("Onboard SMB"));
+		addChild( this->smbusIf );
+
+		smbBbis = new ModBbisSmbPciGen("ICH");
+		// set pci bus path
+		smbBbis->setPciBusPath(smbBusPath);
+
+		this->smbBbisList.push_back(smbBbis);
 	}
 }

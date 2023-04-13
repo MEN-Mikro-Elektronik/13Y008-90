@@ -324,6 +324,7 @@ CpuModelFactory::CpuModelFactory() : ModelFactory()
     append( new ModCpuA17( false ));
     append( new ModCpuA19( false ));
     append( new ModCpuA20( false ));
+    append( new ModCpuA25( false ));
     append( new ModCpuA21( ModCpuA21::A21Msi, ModCpuA21::WithMmods, false ));
     append( new ModCpuA21( ModCpuA21::A21, ModCpuA21::WithMmods, false ));
     append( new ModCpuA21( ModCpuA21::A21, ModCpuA21::WithPmcs, false ));
@@ -366,12 +367,14 @@ CpuModelFactory::CpuModelFactory() : ModelFactory()
     append( new ModCpuF22P(false));
     append( new ModCpuF23P(false));
     append( new ModCpuF26L(false));
+    append( new ModCpuF27P(false));
     append( new ModCpuF50P(false));
     append( new ModCpuF75P(false));
     append( new ModCpuG20(false));
     append( new ModCpuG22(false));
     append( new ModCpuG23(false));
     append( new ModCpuG25A(false));
+    append( new ModCpuG28(false));
     append( new ModCpuMm1(false));
     append( new ModCpuMm50(false));
     append( new ModCpuXm1(false));
@@ -379,6 +382,8 @@ CpuModelFactory::CpuModelFactory() : ModelFactory()
     append( new ModCpuXm50(false));
     append( new ModCpuBx50x(false));
     append( new ModCpuDc15(false));
+    append( new ModCpuDCxx(false));
+    append( new ModCpuBx51x(false));
     append( new ModCpuBx70x(false));
     append( new ModCpuCb30c(false));
     append( new ModCpuCb70c(false));

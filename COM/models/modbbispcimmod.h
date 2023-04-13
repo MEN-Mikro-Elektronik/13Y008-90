@@ -60,10 +60,25 @@
 class ModBbisPciMmodProperties : virtual public DeviceProperties
 {
 public:
+	ModBbisPciMmodProperties() {
+		slotNo=0;
+		pciDevNo=0;
+		pciDevNoIsDef=false;
+		pciBusNo=0;
+		pciBusNoIsDef=false;
+		pciDomainNo=0;
+		useSlotNo=true;
+	};
 	int slotNo;			//!< PCI geographical slot number
 	int pciDevNo;		//!< PCI device number
+	bool pciDevNoIsDef; //!< PCI bus number defined directly
 	int pciBusNo;		//!< PCI bus number
+	bool pciBusNoIsDef; //!< PCI bus number defined directly
 	int pciDomainNo; 	//!< PCI domain number; default: 0
+	bool useSlotNo;
+	bool usePciBusNoAndDevNo(){
+		return pciDevNoIsDef && pciBusNoIsDef;
+	};
 };
 
 //! BBIS base class for PCI M-Module carriers

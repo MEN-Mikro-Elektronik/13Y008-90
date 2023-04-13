@@ -105,6 +105,20 @@ public:
 	};
 };
 
+// -----------------------------------------------------------------
+//! MEN CPU F27P
+
+class ModCpuF27P : public ModCpuF14
+{
+public:
+	ModCpuF27P( bool withSubDevs=true );
+
+	// create another instance
+	virtual Device *create( bool withSubDevs=true ){
+			return new ModCpuF27P( withSubDevs );
+	};
+};
+
 
 #endif
 

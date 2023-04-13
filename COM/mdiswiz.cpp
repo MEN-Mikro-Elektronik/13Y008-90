@@ -252,9 +252,9 @@ extern const QString	G_progName;     //!< main application name
   Common version x.yy.zzz
 
   x.yy = Major/Minor version number
-  zzz   = Reflects changes in the CPU/BBIS model support (is not resetted on x.yy changes!)
+  zzz  = Reflects changes in the CPU/BBIS model support (it is not reset on x.yy change!)
 */
-extern const QString mdiswizVersion = "2.05.00";
+extern const QString mdiswizVersion = "3.02.031";
 
 // -----------------------------------------------------------------
 //! constructs the root ComponentViewItem (QListViewItem)
@@ -1572,11 +1572,14 @@ void MdiswizView::slotSaveAsConfig()
 
 	wDebug(("slotSaveAsConfig()"));
 	if( MAIN_GetCurrentCfg()->saveAs(errMsg) == false ){
-
-		VMsgBox::criticalOk(
-			MAIN_GetCurrentCfg()->msgBoxCaption(),
-			QString("Could not save configuration"),
-			errMsg,	this );
+		//errMsg may contain messages if the config name is invalid
+		//errMsg is empty when 'Cancel' button was used,
+		if( !errMsg.isEmpty() ){
+			VMsgBox::criticalOk(
+					MAIN_GetCurrentCfg()->msgBoxCaption(),
+					QString("Could not save configuration"),
+					errMsg,	this );
+		}
 	}
 	else {
 		cfgUnmodified();

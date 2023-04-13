@@ -34,6 +34,7 @@
 
 #include <qdialog.h>
 #include <q3process.h>
+#include <qlineedit.h>
 
 class Q3TextEdit;
 class QPushButton;
@@ -99,11 +100,14 @@ private slots:
     void slotReadStdout();
     void slotReadStderr();
 	void slotProcessExited();
+    void slotSendCmd();
 	virtual void slotCancel();
+
 private:
 	Q3Process *proc;
 	Q3TextEdit *output;
-	QPushButton *okBut, *cancelBut;
+	QLineEdit *cmdText;
+	QPushButton *okBut, *cancelBut, *sendCmd;
 };
 
 
